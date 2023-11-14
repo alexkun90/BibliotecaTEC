@@ -1,4 +1,4 @@
--- Eliminamos las configuraciones específicas de MySQL
+-- Eliminamos las configuraciones especï¿½ficas de MySQL
 -- SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 -- SET AUTOCOMMIT = 0;
 -- START TRANSACTION;
@@ -54,7 +54,7 @@ CREATE TABLE users (
   sanc_money NUMBER DEFAULT 0 NOT NULL
 );
 
--- Crear las restricciones de clave foránea
+-- Crear las restricciones de clave forï¿½nea
 ALTER TABLE lendings_table ADD CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id);
 ALTER TABLE lendings_table ADD CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books(id);
 
