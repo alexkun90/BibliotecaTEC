@@ -99,8 +99,10 @@ public class Dashboard extends javax.swing.JFrame {
         menu.setBackground(new java.awt.Color(13, 71, 161));
         menu.setPreferredSize(new java.awt.Dimension(270, 640));
 
+        appName.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        appName.setForeground(new java.awt.Color(102, 255, 0));
         appName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        appName.setText("iLib");
+        appName.setText("Libro Tech");
 
         jSeparator1.setPreferredSize(new java.awt.Dimension(50, 5));
 
@@ -111,7 +113,7 @@ public class Dashboard extends javax.swing.JFrame {
         btn_prin.setText("Principal");
         btn_prin.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 13, 1, 1, new java.awt.Color(0, 0, 0)));
         btn_prin.setBorderPainted(false);
-        btn_prin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_prin.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_prin.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btn_prin.setIconTextGap(13);
         btn_prin.setInheritsPopupMenu(true);
@@ -128,7 +130,7 @@ public class Dashboard extends javax.swing.JFrame {
         btn_lends.setText("Préstamos");
         btn_lends.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 13, 1, 1, new java.awt.Color(0, 0, 0)));
         btn_lends.setBorderPainted(false);
-        btn_lends.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_lends.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_lends.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btn_lends.setIconTextGap(13);
         btn_lends.setInheritsPopupMenu(true);
@@ -145,7 +147,7 @@ public class Dashboard extends javax.swing.JFrame {
         btn_returns.setText("Devoluciones");
         btn_returns.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 13, 1, 1, new java.awt.Color(0, 0, 0)));
         btn_returns.setBorderPainted(false);
-        btn_returns.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_returns.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_returns.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btn_returns.setIconTextGap(13);
         btn_returns.setInheritsPopupMenu(true);
@@ -162,7 +164,7 @@ public class Dashboard extends javax.swing.JFrame {
         btn_users.setText("Usuarios");
         btn_users.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 13, 1, 1, new java.awt.Color(0, 0, 0)));
         btn_users.setBorderPainted(false);
-        btn_users.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_users.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_users.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btn_users.setIconTextGap(13);
         btn_users.setInheritsPopupMenu(true);
@@ -179,7 +181,7 @@ public class Dashboard extends javax.swing.JFrame {
         btn_books.setText("Libros");
         btn_books.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 13, 1, 1, new java.awt.Color(0, 0, 0)));
         btn_books.setBorderPainted(false);
-        btn_books.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_books.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_books.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btn_books.setIconTextGap(13);
         btn_books.setInheritsPopupMenu(true);
@@ -196,7 +198,7 @@ public class Dashboard extends javax.swing.JFrame {
         btn_reports.setText("Reportes");
         btn_reports.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 13, 1, 1, new java.awt.Color(0, 0, 0)));
         btn_reports.setBorderPainted(false);
-        btn_reports.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_reports.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_reports.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btn_reports.setIconTextGap(13);
         btn_reports.setInheritsPopupMenu(true);
@@ -274,8 +276,8 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addComponent(navText, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(dateText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addComponent(dateText, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         content.setBackground(new java.awt.Color(255, 255, 255));

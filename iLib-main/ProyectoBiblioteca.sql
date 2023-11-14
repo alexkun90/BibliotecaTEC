@@ -60,3 +60,7 @@ ALTER TABLE lendings_table ADD CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENC
 
 INSERT INTO USERS (ID, NAME, LAST_NAME_P, LAST_NAME_M, DOMICILIO, TEL)
 VALUES (users_seq.NEXTVAL, 'Oscar', 'Doe', 'Smith', '133 Main St', '533-1234');
+
+INSERT INTO USERS (ID, NAME, LAST_NAME_P, LAST_NAME_M, DOMICILIO, TEL)
+VALUES (users_seq.NEXTVAL, 'Carlos', 'Ortiz', 'Hernandez', '144 Los Guido', '8090-9994');
+

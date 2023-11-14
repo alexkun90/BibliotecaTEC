@@ -15,7 +15,7 @@ public class DAOBooksImpl extends Database implements DAOBooks {
     public void registrar(Books book) throws Exception {
         try {
             this.Conectar();
-            PreparedStatement st = this.conexion.prepareStatement("INSERT INTO books(title, date, author, category, \"edit\", lang, pages, description, ejemplares, stock, available) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement st = this.conexion.prepareStatement("INSERT INTO books(title, publication_date, author, category, \"edit\", lang, pages, description, ejemplares, stock, available) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
             st.setString(1, book.getTitle());
             st.setString(2, book.getDate());
             st.setString(3, book.getAuthor());
@@ -39,7 +39,7 @@ public class DAOBooksImpl extends Database implements DAOBooks {
     public void modificar(Books book) throws Exception {
         try {
             this.Conectar();
-            PreparedStatement st = this.conexion.prepareStatement("UPDATE books SET title = ?, date = ?, author = ?, category = ?, \"edit\" = ?, lang = ?, pages = ?, description = ?, ejemplares = ?, stock = ?, available = ? WHERE id = ?");
+            PreparedStatement st = this.conexion.prepareStatement("UPDATE books SET title = ?, publication_date = ?, author = ?, category = ?, \"edit\" = ?, lang = ?, pages = ?, description = ?, ejemplares = ?, stock = ?, available = ? WHERE id = ?");
             st.setString(1, book.getTitle());
             st.setString(2, book.getDate());
             st.setString(3, book.getAuthor());
@@ -91,7 +91,7 @@ public class DAOBooksImpl extends Database implements DAOBooks {
                 Books book = new Books();
                 book.setId(rs.getInt("id"));
                 book.setTitle(rs.getString("title"));
-                book.setDate(rs.getString("date"));
+                book.setDate(rs.getString("publication_date"));
                 book.setAuthor(rs.getString("author"));
                 book.setCategory(rs.getString("category"));
                 book.setEdit(rs.getString("edit"));
@@ -124,7 +124,7 @@ public class DAOBooksImpl extends Database implements DAOBooks {
                 book = new Books();
                 book.setId(rs.getInt("id"));
                 book.setTitle(rs.getString("title"));
-                book.setDate(rs.getString("date"));
+                book.setDate(rs.getString("publication_date"));
                 book.setAuthor(rs.getString("author"));
                 book.setCategory(rs.getString("category"));
                 book.setEdit(rs.getString("edit"));
