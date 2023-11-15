@@ -3,26 +3,43 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.views;
-
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
+import com.mycompany.ilib.Dashboard;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
-
+import java.awt.BorderLayout;
+import java.awt.Insets;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
 /**
  *
  * @author alexa
  */
-public class UserLogin extends javax.swing.JFrame {
+public class UserLogin extends javax.swing.JFrame{
 
     /**
      * Creates new form UserLogin
      */
     public UserLogin() {
         initComponents();
+       InitStyles();
+        
     }
-
+    private void InitStyles() {
+        lbl_pass.putClientProperty("FlatLaf.style", "font: 14 $light.font");
+        lbl_pass.setForeground(Color.black);
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,9 +50,9 @@ public class UserLogin extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lbl_user = new javax.swing.JLabel();
         txt_uname = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        lbl_pass = new javax.swing.JLabel();
         txt_upass = new javax.swing.JPasswordField();
         lbl_login = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -44,7 +61,7 @@ public class UserLogin extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("USERLOGIN"));
 
-        jLabel1.setText("User");
+        lbl_user.setText("User");
 
         txt_uname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -52,7 +69,7 @@ public class UserLogin extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Password");
+        lbl_pass.setText("Password");
 
         txt_upass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,10 +95,10 @@ public class UserLogin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lbl_user, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(73, 73, 73)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -97,12 +114,12 @@ public class UserLogin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lbl_user)
                     .addComponent(txt_uname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_upass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(lbl_pass))
                 .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_login)
@@ -154,6 +171,8 @@ String uname = txt_uname.getText();
             }else{
                 JOptionPane.showMessageDialog(null, "Login Successful");
                 this.setVisible(false);
+                Dashboard abrePrincipal = new Dashboard();
+                abrePrincipal.setVisible(true);
             }
             
         } catch (Exception e) {
@@ -166,6 +185,8 @@ String uname = txt_uname.getText();
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
+                FlatMaterialLighterIJTheme.setup();
+
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -197,11 +218,11 @@ String uname = txt_uname.getText();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbl_login;
+    private javax.swing.JLabel lbl_pass;
+    private javax.swing.JLabel lbl_user;
     private javax.swing.JTextField txt_uname;
     private javax.swing.JPasswordField txt_upass;
     // End of variables declaration//GEN-END:variables

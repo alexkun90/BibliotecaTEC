@@ -360,9 +360,7 @@ public class Dashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dashboard().setVisible(true);
-                new UserLogin().setVisible(true);
-            }
+                new Dashboard().setVisible(true);            }
         });
     }
 
