@@ -38,7 +38,8 @@ public class Dashboard extends javax.swing.JFrame {
     }
     
     public void InitStyles() {
-        
+        lbl_user.putClientProperty("FlatLaf.style", "font: 35 $light.font");
+        lbl_user.setForeground(Color.black);
         navText.putClientProperty("FlatLaf.style", "font: bold $h3.regular.font");
         navText.setForeground(Color.white);
         dateText.putClientProperty("FlatLaf.style", "font: 24 $light.font");
