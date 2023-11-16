@@ -184,7 +184,8 @@ String uname = txt_uname.getText();
                 JOptionPane.showMessageDialog(null, "Login Successful");
                 this.setVisible(false);
                 Dashboard venta = new Dashboard();
-        venta.setVisible(true);
+                venta.setDato(txt_uname.getText());
+                venta.setVisible(true);
             }
             
         } catch (Exception e) {
