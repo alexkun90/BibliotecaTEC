@@ -35,7 +35,7 @@ public class Dashboard extends javax.swing.JFrame {
         InitContent();
     }
     
-    private void InitStyles() {
+    public void InitStyles() {
         mensaje.putClientProperty("FlatLaf.style", "font: 14 $light.font");
         mensaje.setForeground(Color.black);
         navText.putClientProperty("FlatLaf.style", "font: bold $h3.regular.font");
@@ -46,14 +46,16 @@ public class Dashboard extends javax.swing.JFrame {
         appName.setForeground(Color.white);
     }
     
-    private void SetDate() {
+    public void SetDate() {
         LocalDate now = LocalDate.now();
         Locale spanishLocale = new Locale("es", "ES");
         dateText.setText(now.format(DateTimeFormatter.ofPattern("'Hoy es' EEEE dd 'de' MMMM 'de' yyyy", spanishLocale)));
     }
     
-    private void InitContent() {
+    public void InitContent() {
+      
         ShowJPanel(new Principal());
+
     }
     
     public static void ShowJPanel(JPanel p) {

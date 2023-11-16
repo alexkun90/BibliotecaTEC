@@ -38,5 +38,10 @@
             <artifactId>ojdbc8</artifactId>
             <version>19.3.0.0</version> <!-- Reemplaza con la versión adecuada -->
         </dependency>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
     </dependencies>
 </project>

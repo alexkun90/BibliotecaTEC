@@ -7,7 +7,9 @@ com\mycompany\views\Books$2.class
 com\mycompany\views\Lendings$1.class
 com\mycompany\views\Reports$3.class
 com\mycompany\views\Users$4.class
+com\mycompany\views\Register$5.class
 com\mycompany\views\UserLogin.class
+com\mycompany\views\Register$1.class
 com\mycompany\ilib\Dashboard$2.class
 com\mycompany\views\Books$6.class
 com\mycompany\views\UpUsers.class
@@ -17,6 +19,7 @@ com\mycompany\ilib\Dashboard.class
 com\mycompany\views\UpBooks$1.class
 com\mycompany\ilib\Dashboard$6.class
 com\mycompany\ilib\DAOBooksImpl.class
+com\mycompany\views\Register$4.class
 com\mycompany\views\Books$3.class
 com\mycompany\views\Reports$2.class
 com\mycompany\views\Users.class
@@ -29,6 +32,7 @@ com\mycompany\views\Users$6.class
 com\mycompany\ilib\DAOUsersImpl.class
 com\mycompany\views\Principal.class
 com\mycompany\ilib\Dashboard$7.class
+com\mycompany\views\Register.class
 com\mycompany\ilib\Dashboard$3.class
 com\mycompany\views\UpUsers$1.class
 com\mycompany\views\Users$3.class
@@ -37,15 +41,19 @@ com\mycompany\views\Books$1.class
 com\mycompany\views\UserLogin$4.class
 com\mycompany\views\Books.class
 com\mycompany\interfaces\DAOLendings.class
+com\mycompany\views\Register$3.class
 com\mycompany\views\UpBooks.class
 com\mycompany\views\UserLogin$1.class
 com\mycompany\views\Users$5.class
 com\mycompany\ilib\Dashboard$1.class
 com\mycompany\views\Books$5.class
+com\mycompany\views\Register$2.class
+com\mycompany\views\Register$6.class
 com\mycompany\ilib\DAOLendingsImpl.class
 com\mycompany\interfaces\DAOBooks.class
 com\mycompany\views\Returns$1.class
 com\mycompany\views\Users$2.class
+com\mycompany\views\UserLogin$5.class
 com\mycompany\db\Database.class
 com\mycompany\ilib\Dashboard$4.class
 com\mycompany\interfaces\DAOUsers.class

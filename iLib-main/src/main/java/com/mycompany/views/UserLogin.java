@@ -6,6 +6,7 @@ package com.mycompany.views;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
 import com.mycompany.ilib.Dashboard;
+import static com.mycompany.ilib.Dashboard.ShowJPanel;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -32,7 +33,9 @@ public class UserLogin extends javax.swing.JFrame{
      */
     public UserLogin() {
         initComponents();
-       InitStyles();
+        InitStyles();
+       // InitContent();
+
         
     }
     private void InitStyles() {
@@ -40,6 +43,10 @@ public class UserLogin extends javax.swing.JFrame{
         lbl_pass.setForeground(Color.black);
         
     }
+    //private void InitContent() {
+      //  Dashboard venta = new Dashboard();
+        //venta.setVisible(true);
+    //}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,6 +94,11 @@ public class UserLogin extends javax.swing.JFrame{
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
         jLabel4.setText("Registrarse");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -171,8 +183,8 @@ String uname = txt_uname.getText();
             }else{
                 JOptionPane.showMessageDialog(null, "Login Successful");
                 this.setVisible(false);
-                Dashboard abrePrincipal = new Dashboard();
-                abrePrincipal.setVisible(true);
+                Dashboard venta = new Dashboard();
+        venta.setVisible(true);
             }
             
         } catch (Exception e) {
@@ -180,13 +192,20 @@ String uname = txt_uname.getText();
         }
     }//GEN-LAST:event_lbl_loginMouseClicked
 
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+
+        this.dispose();
+        new Register().show();
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel4MouseClicked
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-                FlatMaterialLighterIJTheme.setup();
-
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
