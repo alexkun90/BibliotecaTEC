@@ -91,8 +91,12 @@ SELECT * FROM Books;
 SELECT * FROM lendings_table;
 
 --Creacion del usuario C##admin contraseña: 123
-
-/*CREATE USER C##biblio IDENTIFIED BY 123;
+  
+/*
+    sqlplus /nolog
+    conn system/su_contraseña
+    
+  CREATE USER C##biblio IDENTIFIED BY 123;
   GRANT DBA TO C##admin;
   CREATE TABLESPACE ts_admin DATAFILE 'ts_admin.dbf' SIZE 20M;
   ALTER USER C##admin DEFAULT TABLESPACE ts_admin;

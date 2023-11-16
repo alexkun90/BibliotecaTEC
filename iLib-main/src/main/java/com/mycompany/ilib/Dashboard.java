@@ -103,17 +103,17 @@ public class Dashboard extends javax.swing.JFrame {
 
         background.setBackground(new java.awt.Color(255, 255, 255));
 
-        menu.setBackground(new java.awt.Color(13, 71, 161));
+        menu.setBackground(new java.awt.Color(204, 153, 0));
         menu.setPreferredSize(new java.awt.Dimension(270, 640));
 
         appName.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        appName.setForeground(new java.awt.Color(102, 255, 0));
+        appName.setForeground(new java.awt.Color(255, 255, 255));
         appName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         appName.setText("Libro Tech");
 
         jSeparator1.setPreferredSize(new java.awt.Dimension(50, 5));
 
-        btn_prin.setBackground(new java.awt.Color(21, 101, 192));
+        btn_prin.setBackground(new java.awt.Color(204, 153, 0));
         btn_prin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_prin.setForeground(new java.awt.Color(255, 255, 255));
         btn_prin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home-outline.png"))); // NOI18N
@@ -130,7 +130,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        btn_lends.setBackground(new java.awt.Color(21, 101, 192));
+        btn_lends.setBackground(new java.awt.Color(204, 153, 0));
         btn_lends.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_lends.setForeground(new java.awt.Color(255, 255, 255));
         btn_lends.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calendar-plus.png"))); // NOI18N
@@ -147,7 +147,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        btn_returns.setBackground(new java.awt.Color(21, 101, 192));
+        btn_returns.setBackground(new java.awt.Color(204, 153, 0));
         btn_returns.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_returns.setForeground(new java.awt.Color(255, 255, 255));
         btn_returns.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calendar-multiple-check.png"))); // NOI18N
@@ -164,7 +164,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        btn_users.setBackground(new java.awt.Color(21, 101, 192));
+        btn_users.setBackground(new java.awt.Color(204, 153, 0));
         btn_users.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_users.setForeground(new java.awt.Color(255, 255, 255));
         btn_users.setIcon(new javax.swing.ImageIcon(getClass().getResource("/account-multiple.png"))); // NOI18N
@@ -181,7 +181,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        btn_books.setBackground(new java.awt.Color(21, 101, 192));
+        btn_books.setBackground(new java.awt.Color(204, 153, 0));
         btn_books.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_books.setForeground(new java.awt.Color(255, 255, 255));
         btn_books.setIcon(new javax.swing.ImageIcon(getClass().getResource("/book-open-page-variant.png"))); // NOI18N
@@ -198,7 +198,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        btn_reports.setBackground(new java.awt.Color(21, 101, 192));
+        btn_reports.setBackground(new java.awt.Color(204, 153, 0));
         btn_reports.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_reports.setForeground(new java.awt.Color(255, 255, 255));
         btn_reports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/file-chart.png"))); // NOI18N
@@ -259,7 +259,7 @@ public class Dashboard extends javax.swing.JFrame {
                         .addComponent(btn_reports, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
-        header.setBackground(new java.awt.Color(25, 118, 210));
+        header.setBackground(new java.awt.Color(204, 153, 0));
         header.setPreferredSize(new java.awt.Dimension(744, 150));
 
         navText.setText("Administración/Control/Biblioteca");
