@@ -49,10 +49,6 @@
               <Group type="102" attributes="0">
                   <Component id="menu" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                          <Component id="mensaje" min="-2" pref="389" max="-2" attributes="0"/>
-                      </Group>
                       <Component id="header" pref="760" max="32767" attributes="0"/>
                       <Component id="content" max="32767" attributes="0"/>
                   </Group>
@@ -63,9 +59,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="menu" alignment="0" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                  <Component id="mensaje" min="-2" pref="26" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
                   <Component id="header" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="content" max="32767" attributes="0"/>
@@ -413,11 +407,6 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
         </Container>
-        <Component class="javax.swing.JLabel" name="mensaje">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="We &#x2665;  the reading!"/>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

@@ -36,8 +36,7 @@ public class Dashboard extends javax.swing.JFrame {
     }
     
     public void InitStyles() {
-        mensaje.putClientProperty("FlatLaf.style", "font: 14 $light.font");
-        mensaje.setForeground(Color.black);
+        
         navText.putClientProperty("FlatLaf.style", "font: bold $h3.regular.font");
         navText.setForeground(Color.white);
         dateText.putClientProperty("FlatLaf.style", "font: 24 $light.font");
@@ -91,7 +90,6 @@ public class Dashboard extends javax.swing.JFrame {
         navText = new javax.swing.JLabel();
         dateText = new javax.swing.JLabel();
         content = new javax.swing.JPanel();
-        mensaje = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1050, 660));
@@ -285,8 +283,6 @@ public class Dashboard extends javax.swing.JFrame {
         content.setBackground(new java.awt.Color(255, 255, 255));
         content.setLayout(new java.awt.BorderLayout());
 
-        mensaje.setText("We ♥  the reading!");
-
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
         backgroundLayout.setHorizontalGroup(
@@ -294,9 +290,6 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(backgroundLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(mensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(header, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
                     .addComponent(content, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -304,9 +297,7 @@ public class Dashboard extends javax.swing.JFrame {
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(backgroundLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(mensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addGap(59, 59, 59)
                 .addComponent(header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(content, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -379,7 +370,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel dateText;
     private javax.swing.JPanel header;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel mensaje;
     private javax.swing.JPanel menu;
     private javax.swing.JLabel navText;
     // End of variables declaration//GEN-END:variables
