@@ -84,3 +84,89 @@ INSERT INTO books(title, publication_date, author, category, "edit", lang, pages
 SELECT * FROM USERS;
 SELECT * FROM Books;
 SELECT * FROM lendings_table;
+
+
+
+
+
+
+
+CREATE SEQUENCE multas_seq;
+
+CREATE TABLE multas(
+id_multa NUMBER DEFAULT multas_seq.NextVal PRIMARY KEY,
+id_users NUMBER,
+monto DECIMAL(10, 2),
+fecha_vencimiento DATE,
+estado_multa VARCHAR(20));
+
+CREATE SEQUENCE usuario_multa_seq;
+
+CREATE TABLE usuario_multas (
+    ID_usuario NUMBER,
+    ID_multa NUMBER DEFAULT usuario_multa_seq.NextVal PRIMARY KEY
+);
+
+
+CREATE SEQUENCE autores_seq;
+
+CREATE TABLE autores (
+    ID_autor NUMBER DEFAULT multas_seq.NextVal PRIMARY Key,
+    Nombre_Autor VARCHAR(45),
+    Nacionalidad VARCHAR(25),
+    Informacion_Adicional TEXT
+);
+
+CREATE SEQUENCE generos_seq;
+
+CREATE TABLE Generos (
+    ID_genero NUMBER DEFAULT generos_seq.NextVal PRIMARY KEY,
+    Nombre_Genero VARCHAR(50),
+    Descripcion_Genero VARCHAR(50)
+);
+
+CREATE SEQUENCE libros_autores_seq;
+
+CREATE TABLE libros_autores (
+    id_libros NUMBER DEFAULT libros_autores_seq.NextVal PRIMARY KEY,
+    id_autor NUMBER
+);
+
+CREATE SEQUENCE libros_generos_seq;
+
+CREATE TABLE libros_generos (
+    id_libros NUMBER DEFAULT libros_generos_seq.NextVal PRIMARY KEY,
+    Nombre_Genero VARCHAR(50)
+);
+
+CREATE SEQUENCE editorial_seq;
+
+CREATE TABLE editorial (
+    ID_editorial NUMBER DEFAULT editorial_seq.NextVal PRIMARY KEY,
+    Nombre_editorial VARCHAR(100),
+    Direccion_editorial VARCHAR(255),
+    Informacion_contacto_editorial VARCHAR(255)
+);
+
+CREATE SEQUENCE editorial_libro_seq;
+
+CREATE TABLE editoriales_libros (
+    ID_editorial NUMBER DEFAULT editorial_libro_seq.NextVal PRIMARY KEY,
+    ID_edilibro NUMBER
+);
+
+CREATE SEQUENCE autores_libro_seq;
+
+CREATE TABLE autores_libros (
+    ID_autor_libro NUMBER DEFAULT autores_libro_seq.NextVal PRIMARY KEY,
+    ID_autor NUMBER,
+    ID_libro NUMBER
+);
+
+CREATE SEQUENCE idiomas_seq;
+
+CREATE TABLE idiomas (
+    ID_idioma NUMBER DEFAULT idiomas_seq.NextVal PRIMARY KEY,
+    Nombre_idioma VARCHAR(50),
+    Descripcion_idioma VARCHAR(255)
+);
