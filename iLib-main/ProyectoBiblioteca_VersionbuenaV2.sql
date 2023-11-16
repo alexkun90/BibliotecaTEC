@@ -44,7 +44,7 @@ CREATE TABLE users (
   sanc_money NUMBER DEFAULT 0 NOT NULL
 );
 
--- Crear las restricciones de clave for�nea
+-- Crear las restricciones de clave forï¿½nea
 ALTER TABLE lendings_table ADD CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id);
 ALTER TABLE lendings_table ADD CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books(id);
 
@@ -90,11 +90,11 @@ SELECT * FROM USERLogin;
 SELECT * FROM Books;
 SELECT * FROM lendings_table;
 
---Creacion del usuario C##admin contrase�a: 123
+--Creacion del usuario C##admin contraseña: 123
   
 /*
     sqlplus /nolog
-    conn system/su_contrase�a
+    conn system/su_contraseña
     
   CREATE USER C##biblio IDENTIFIED BY 123;
   GRANT DBA TO C##admin;
@@ -102,3 +102,210 @@ SELECT * FROM lendings_table;
   ALTER USER C##admin DEFAULT TABLESPACE ts_admin;
   ALTER USER C##admin QUOTA UNLIMITED ON ts_admin;
 */
+
+
+
+CREATE SEQUENCE multas_seq;
+
+CREATE TABLE multas(
+id_multa NUMBER DEFAULT multas_seq.NextVal PRIMARY KEY,
+id_users NUMBER,
+monto DECIMAL(10, 2),
+fecha_vencimiento DATE,
+estado_multa VARCHAR(20));
+
+CREATE SEQUENCE usuario_multa_seq;
+
+CREATE TABLE usuario_multas (
+    ID_usuario NUMBER,
+    ID_multa NUMBER DEFAULT usuario_multa_seq.NextVal PRIMARY KEY
+);
+
+
+CREATE SEQUENCE autores_seq;
+
+CREATE TABLE autores (
+    ID_autor NUMBER DEFAULT multas_seq.NextVal PRIMARY Key,
+    Nombre_Autor VARCHAR(45),
+    Nacionalidad VARCHAR(25),
+    Informacion_Adicional TEXT
+);
+
+CREATE SEQUENCE generos_seq;
+
+CREATE TABLE Generos (
+    ID_genero NUMBER DEFAULT generos_seq.NextVal PRIMARY KEY,
+    Nombre_Genero VARCHAR(50),
+    Descripcion_Genero VARCHAR(50)
+);
+
+CREATE SEQUENCE libros_autores_seq;
+
+CREATE TABLE libros_autores (
+    id_libros NUMBER DEFAULT libros_autores_seq.NextVal PRIMARY KEY,
+    id_autor NUMBER
+);
+
+CREATE SEQUENCE libros_generos_seq;
+
+CREATE TABLE libros_generos (
+    id_libros NUMBER DEFAULT libros_generos_seq.NextVal PRIMARY KEY,
+    Nombre_Genero VARCHAR(50)
+);
+
+CREATE SEQUENCE editorial_seq;
+
+CREATE TABLE editorial (
+    ID_editorial NUMBER DEFAULT editorial_seq.NextVal PRIMARY KEY,
+    Nombre_editorial VARCHAR(100),
+    Direccion_editorial VARCHAR(255),
+    Informacion_contacto_editorial VARCHAR(255)
+);
+
+CREATE SEQUENCE editorial_libro_seq;
+
+CREATE TABLE editoriales_libros (
+    ID_editorial NUMBER DEFAULT editorial_libro_seq.NextVal PRIMARY KEY,
+    ID_edilibro NUMBER
+);
+
+CREATE SEQUENCE autores_libro_seq;
+
+CREATE TABLE autores_libros (
+    ID_autor_libro NUMBER DEFAULT autores_libro_seq.NextVal PRIMARY KEY,
+    ID_autor NUMBER,
+    ID_libro NUMBER
+);
+
+CREATE SEQUENCE idiomas_seq;
+
+CREATE TABLE idiomas (
+    ID_idioma NUMBER DEFAULT idiomas_seq.NextVal PRIMARY KEY,
+    Nombre_idioma VARCHAR(50),
+    Descripcion_idioma VARCHAR(255)
+);
+
+--Triggers---------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER update_available_books
+AFTER INSERT OR DELETE ON lendings_table
+FOR EACH ROW
+DECLARE
+    v_available NUMBER;
+BEGIN
+    IF INSERTING THEN
+        -- Actualizar disponible al prestar un libro
+        SELECT available
+        INTO v_available
+        FROM books
+        WHERE id = :new.book_id;
+
+        IF v_available > 0 THEN
+            UPDATE books
+            SET available = available - 1
+            WHERE id = :new.book_id;
+        ELSE
+            RAISE_APPLICATION_ERROR(-20001, 'No hay ejemplares disponibles para prestar.');
+        END IF;
+    ELSIF DELETING THEN
+        -- Actualizar disponible al devolver un libro
+        UPDATE books
+        SET available = available + 1
+        WHERE id = :old.book_id;
+    END IF;
+END;
+/
+
+------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER update_user_sanctions
+AFTER INSERT OR DELETE ON multas
+FOR EACH ROW
+DECLARE
+    v_sanc_count NUMBER;
+    v_total_sanc_money NUMBER;
+BEGIN
+    IF INSERTING THEN
+        -- Incrementar el número de sanciones y el monto total de sanciones al insertar una multa
+        UPDATE users
+        SET sanctions = sanctions + 1,
+            sanc_money = sanc_money + :new.monto
+        WHERE id = :new.id_users;
+    ELSIF DELETING THEN
+        -- Decrementar el número de sanciones y el monto total de sanciones al eliminar una multa
+        SELECT sanctions, sanc_money
+        INTO v_sanc_count, v_total_sanc_money
+        FROM users
+        WHERE id = :old.id_users;
+
+        IF v_sanc_count > 0 THEN
+            UPDATE users
+            SET sanctions = v_sanc_count - 1,
+                sanc_money = v_total_sanc_money - :old.monto
+            WHERE id = :old.id_users;
+        END IF;
+    END IF;
+END;
+/
+
+-------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER update_book_available
+AFTER INSERT OR DELETE ON multas
+FOR EACH ROW
+DECLARE
+    v_available NUMBER;
+BEGIN
+    IF INSERTING THEN
+        -- Actualizar disponible al insertar una multa
+        SELECT available
+        INTO v_available
+        FROM books
+        WHERE id = (SELECT book_id FROM lendings_table WHERE id = :new.id_multa);
+
+        IF v_available > 0 THEN
+            UPDATE books
+            SET available = available - 1
+            WHERE id = (SELECT book_id FROM lendings_table WHERE id = :new.id_multa);
+        ELSE
+            RAISE_APPLICATION_ERROR(-20001, 'No hay ejemplares disponibles para prestar.');
+        END IF;
+
+    ELSIF DELETING THEN
+        -- Actualizar disponible al eliminar una multa
+        UPDATE books
+        SET available = available + 1
+        WHERE id = (SELECT book_id FROM lendings_table WHERE id = :old.id_multa);
+    END IF;
+END;
+/
+
+--Vistas--------------------------------------------------------------------------------
+
+CREATE VIEW basic_book_info AS
+SELECT id, title, author, category
+FROM books;
+
+----------------------------------------------------------------------
+
+CREATE VIEW basic_lending_info AS
+SELECT id, user_id, book_id
+FROM lendings_table;
+
+-----------------------------------------------------------------------
+
+CREATE VIEW basic_user_info AS
+SELECT id, name, last_name_p, last_name_m
+FROM users;
+
+-----------------------------------------------------------------------
+
+CREATE VIEW basic_penalty_info AS
+SELECT id_multa, id_users, monto, fecha_vencimiento, estado_multa
+FROM multas;
+
+----------------------------------------------------------------------
+
+CREATE VIEW user_penalty_info AS
+SELECT ID_usuario, ID_multa
+FROM usuario_multas;
