@@ -21,6 +21,8 @@ com\mycompany\ilib\Dashboard$6.class
 com\mycompany\ilib\DAOBooksImpl.class
 com\mycompany\views\Register$4.class
 com\mycompany\views\Books$3.class
+com\mycompany\interfaces\DAOMultas.class
+com\mycompany\models\Multas.class
 com\mycompany\views\Reports$2.class
 com\mycompany\views\Users.class
 com\mycompany\views\UserLogin$3.class
@@ -31,6 +33,7 @@ com\mycompany\views\Reports$1.class
 com\mycompany\views\Users$6.class
 com\mycompany\ilib\DAOUsersImpl.class
 com\mycompany\views\Principal.class
+com\mycompany\ilib\DAOMultasImpl.class
 com\mycompany\ilib\Dashboard$7.class
 com\mycompany\views\Register.class
 com\mycompany\ilib\Dashboard$3.class
