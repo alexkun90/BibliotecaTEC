@@ -13,8 +13,8 @@ public class Database {
     private final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
     private final String DB_URL = "jdbc:oracle:thin:@localhost:1521:orcl";
     
-    private final String USER = "HR";
-    private final String PASS = "12345";
+    private final String USER = "C##admin";
+    private final String PASS = "123";
     
      public void Conectar() throws ClassNotFoundException, SQLException {
         try {

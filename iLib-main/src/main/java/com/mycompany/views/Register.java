@@ -221,7 +221,7 @@ public class Register extends javax.swing.JFrame {
               
                Class.forName("oracle.jdbc.driver.OracleDriver");
             String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-            Connection conn = DriverManager.getConnection(url,"HR","12345");
+            Connection conn = DriverManager.getConnection(url,"C##admin","123");
             String sql = "INSERT INTO USERLOGIN(ID,\"LNAME\",\"FNAME\",\"MNAME\",\"BIRTH_DATE\",\"USER_ROLE\",\"USER_NAME\",\"USER_PASSWORD\") VALUES(?,?,?,?,?,?,?,?)";
                PreparedStatement pst = conn.prepareStatement(sql);
                pst.setInt(1,id);

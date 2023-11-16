@@ -168,8 +168,8 @@ String uname = txt_uname.getText();
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-            String username = "HR";
-            String password = "12345";
+            String username = "C##admin";
+            String password = "123";
             
             Connection conn = DriverManager.getConnection(url,username,password);
             String sqlquery = "SELECT * FROM USERLOGIN WHERE \"USER_NAME\" =? AND \"USER_PASSWORD\" = ?";
