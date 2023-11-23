@@ -9,5 +9,5 @@ public interface DAOMultas {
     public void modificar(Multas multa) throws Exception;
     public void eliminar(int multaid) throws Exception;
     public List<Multas> listar() throws Exception;
-    public Multas getMultaById(int userId) throws Exception;
+    public Multas getMultaById(int multaId) throws Exception;
 }
