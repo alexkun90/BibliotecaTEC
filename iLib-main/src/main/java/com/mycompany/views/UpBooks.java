@@ -107,6 +107,12 @@ public class UpBooks extends javax.swing.JPanel {
 
         catLbl.setText("Categoría");
 
+        catTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                catTxtActionPerformed(evt);
+            }
+        });
+
         edLbl.setText("Edición");
 
         jSeparator1.setForeground(new java.awt.Color(204, 204, 204));
@@ -356,6 +362,10 @@ public class UpBooks extends javax.swing.JPanel {
             System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_buttonActionPerformed
+
+    private void catTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_catTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_catTxtActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLbl;
