@@ -71,6 +71,12 @@ public class Register extends javax.swing.JFrame {
 
         jLabel3.setText("FIRSTNAME");
 
+        txt_fname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_fnameActionPerformed(evt);
+            }
+        });
+
         jLabel4.setText("LASTNAME");
 
         jLabel5.setText("MIDDLENAME");
@@ -264,6 +270,10 @@ public class Register extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void txt_fnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_fnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_fnameActionPerformed
 
     /**
      * @param args the command line arguments
