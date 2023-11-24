@@ -18,6 +18,7 @@ com\mycompany\views\Books$6.class
 com\mycompany\views\UpUsers.class
 com\mycompany\models\Users.class
 com\mycompany\views\Users$1.class
+com\mycompany\views\RegisterEmple.class
 com\mycompany\views\UpMultas$3.class
 com\mycompany\ilib\Dashboard.class
 com\mycompany\views\DashboardAdmin$3.class
@@ -28,6 +29,7 @@ com\mycompany\views\Register$4.class
 com\mycompany\views\UpMultas$2.class
 com\mycompany\views\Books$3.class
 com\mycompany\interfaces\DAOMultas.class
+com\mycompany\views\RegisterEmple$1.class
 com\mycompany\models\Multas.class
 com\mycompany\views\DashboardAdmin$5.class
 com\mycompany\views\Reports$2.class
@@ -50,6 +52,7 @@ com\mycompany\ilib\Dashboard$7.class
 com\mycompany\views\DashboardAdmin$1.class
 com\mycompany\views\UpMultas$1.class
 com\mycompany\views\Register.class
+com\mycompany\views\RegisterEmple$2.class
 com\mycompany\ilib\Dashboard$3.class
 com\mycompany\views\UpUsers$1.class
 com\mycompany\views\Users$3.class
