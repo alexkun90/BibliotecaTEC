@@ -14,8 +14,18 @@ import javax.swing.JOptionPane;
 
 public class RegisterEmple extends javax.swing.JPanel {
 
+    boolean isEdition = false;
+    com.mycompany.models.Empleados userEdition;
+    
     public RegisterEmple() {
         initComponents();
+        InitStyles();
+        
+    }
+    public RegisterEmple(com.mycompany.models.Empleados empleado) {
+        initComponents();
+        isEdition = true;
+        userEdition = empleado;
         InitStyles();
     }
 
@@ -29,6 +39,24 @@ public class RegisterEmple extends javax.swing.JPanel {
         txt_upass.putClientProperty("JTextField.placeholderText", "Ingrese la contraseña del usuario.");
         txt_mname.putClientProperty("JTextField.placeholderText", "Ingrese el segundo nombre del usuario.");
         jdc_bdate.putClientProperty("JTextField.placeholderText", "Ingrese cumpleaños del usuario.");
+        
+        if (isEdition) {
+            title.setText("Editar Empleado");
+            btn_register.setText("Guardar");
+
+            if (userEdition != null) {
+                
+                int valorEntero = userEdition.getID();
+                txt_id.setText("" + valorEntero);
+                txt_lname.setText(userEdition.getLNAME());
+                txt_fname.setText(userEdition.getFNAME());
+                txt_mname.setText(userEdition.getMNAME());
+                
+                txt_uname.setText(userEdition.getUSER_NAME());
+                txt_upass.setText(userEdition.getUSER_PASSWORD());
+                
+            }
+        }
     }
 
     /**
