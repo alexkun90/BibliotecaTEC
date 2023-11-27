@@ -606,6 +606,502 @@ BEGIN
   libros_no_disponibles;
 END;
 
+--Cursores----------------------------------------------------------------------
+--1--
+DECLARE
+    CURSOR c_books IS
+        SELECT * FROM books;
+BEGIN
+    FOR book_rec IN c_books LOOP
+        -- Lógica para cada registro de libro
+        DBMS_OUTPUT.PUT_LINE('Book Title: ' || book_rec.title);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--2--
+DECLARE
+    v_author_name VARCHAR2(255) := 'NombreDelAutor';
+    CURSOR c_books_by_author IS
+        SELECT * FROM books WHERE author = v_author_name;
+BEGIN
+    FOR book_rec IN c_books_by_author LOOP
+        -- Lógica para cada libro del autor específico
+        DBMS_OUTPUT.PUT_LINE('Book Title: ' || book_rec.title);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--3--
+DECLARE
+    CURSOR c_lendings IS
+        SELECT * FROM lendings_table;
+BEGIN
+    FOR lending_rec IN c_lendings LOOP
+        -- Lógica para cada registro de préstamo
+        DBMS_OUTPUT.PUT_LINE('Book ID: ' || lending_rec.book_id || ', User ID: ' || lending_rec.user_id);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--4--
+DECLARE
+    CURSOR c_users_with_penalties IS
+        SELECT * FROM users WHERE sanctions > 0;
+BEGIN
+    FOR user_rec IN c_users_with_penalties LOOP
+        -- Lógica para cada usuario con multa
+        DBMS_OUTPUT.PUT_LINE('User ID: ' || user_rec.id || ', Name: ' || user_rec.name);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--5--
+DECLARE
+    v_book_id NUMBER := 1; -- ID del libro deseado
+    v_available_books NUMBER;
+    CURSOR c_available_books IS
+        SELECT available FROM books WHERE id = v_book_id;
+BEGIN
+    OPEN c_available_books;
+    FETCH c_available_books INTO v_available_books;
+    CLOSE c_available_books;
+
+    -- Lógica para utilizar v_available_books
+    DBMS_OUTPUT.PUT_LINE('Available Books: ' || v_available_books);
+END;
+--------------------------------------------------------------------------------
+--6--
+DECLARE
+    v_lending_id NUMBER := 1; -- ID del préstamo deseado
+    CURSOR c_lending_details IS
+        SELECT * FROM lendings_table WHERE id = v_lending_id;
+BEGIN
+    FOR lending_rec IN c_lending_details LOOP
+        -- Lógica para cada detalle del préstamo
+        DBMS_OUTPUT.PUT_LINE('Lending ID: ' || lending_rec.id || ', Book ID: ' || lending_rec.book_id || ', User ID: ' || lending_rec.user_id);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--7--
+DECLARE
+    CURSOR c_book_genres IS
+        SELECT DISTINCT category FROM books;
+BEGIN
+    FOR genre_rec IN c_book_genres LOOP
+        -- Lógica para cada género
+        DBMS_OUTPUT.PUT_LINE('Book Genre: ' || genre_rec.category);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--8--
+DECLARE
+    CURSOR c_authors_with_info IS
+        SELECT * FROM autores;
+BEGIN
+    FOR author_rec IN c_authors_with_info LOOP
+        -- Lógica para cada autor con información adicional
+        DBMS_OUTPUT.PUT_LINE('Author ID: ' || author_rec.ID_autor || ', Name: ' || author_rec.Nombre_Autor || ', Nationality: ' || author_rec.Nacionalidad);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--9--
+DECLARE
+    CURSOR libros_prestamo_cursor IS
+        SELECT id, title, author
+        FROM books
+        WHERE id IN (SELECT book_id FROM lendings_table WHERE date_return IS NULL);
+BEGIN
+    -- Lógica de uso del cursor (puede ser un bucle FOR, etc.)
+    FOR libro IN libros_prestamo_cursor LOOP
+        -- Acciones a realizar con cada fila del cursor
+        DBMS_OUTPUT.PUT_LINE('Libro en préstamo: ' || libro.title || ', Autor: ' || libro.author);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--10--
+DECLARE
+    CURSOR usuarios_multas_cursor IS
+        SELECT id, name, last_name_p, last_name_m
+        FROM users
+        WHERE id IN (SELECT DISTINCT id_users FROM multas WHERE estado_multa = 'Activa');
+BEGIN
+    FOR usuario IN usuarios_multas_cursor LOOP
+        DBMS_OUTPUT.PUT_LINE('Usuario con multa activa: ' || usuario.name || ' ' || usuario.last_name_p);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--11--
+DECLARE
+    v_user_id NUMBER := 1; -- ID del usuario específico
+    CURSOR prestamos_usuario_cursor IS
+        SELECT lt.id, lt.date_out, lt.date_return, b.title
+        FROM lendings_table lt
+        INNER JOIN books b ON lt.book_id = b.id
+        WHERE lt.user_id = v_user_id;
+BEGIN
+    FOR prestamo IN prestamos_usuario_cursor LOOP
+        DBMS_OUTPUT.PUT_LINE('Préstamo ID: ' || prestamo.id || ', Libro: ' || prestamo.title ||
+                             ', Fecha de préstamo: ' || prestamo.date_out);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--12--
+DECLARE
+    CURSOR autores_mas_cinco_libros_cursor IS
+        SELECT a.ID_autor, a.Nombre_Autor, COUNT(la.id_libros) AS total_libros
+        FROM autores a
+        INNER JOIN libros_autores la ON a.ID_autor = la.id_autor
+        GROUP BY a.ID_autor, a.Nombre_Autor
+        HAVING COUNT(la.id_libros) > 5;
+BEGIN
+    FOR autor IN autores_mas_cinco_libros_cursor LOOP
+        DBMS_OUTPUT.PUT_LINE('Autor con más de 5 libros: ' || autor.Nombre_Autor || ', Total de libros: ' || autor.total_libros);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--13--
+DECLARE
+    v_categoria VARCHAR2(50) := 'Novela'; -- Categoría específica
+    CURSOR libros_categoria_cursor IS
+        SELECT id, title, author
+        FROM books
+        WHERE category = v_categoria;
+BEGIN
+    FOR libro_categoria IN libros_categoria_cursor LOOP
+        DBMS_OUTPUT.PUT_LINE('Libro en la categoría ' || v_categoria || ': ' || libro_categoria.title || ', Autor: ' || libro_categoria.author);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--14--
+DECLARE
+    CURSOR generos_libros_cursor IS
+        SELECT DISTINCT lg.Nombre_Genero
+        FROM libros_generos lg;
+BEGIN
+    FOR genero_libro IN generos_libros_cursor LOOP
+        DBMS_OUTPUT.PUT_LINE('Género de libro disponible: ' || genero_libro.Nombre_Genero);
+    END LOOP;
+END;
+--------------------------------------------------------------------------------
+--15--
+DECLARE
+    CURSOR usuarios_con_sanciones_cursor IS
+        SELECT id, name, last_name_p, last_name_m, sanc_money
+        FROM users
+        WHERE sanc_money > 0;
+BEGIN
+    FOR usuario_sancionado IN usuarios_con_sanciones_cursor LOOP
+        DBMS_OUTPUT.PUT_LINE('Usuario con sanción monetaria: ' || usuario_sancionado.name ||
+                             ' ' || usuario_sancionado.last_name_p || ', Monto: ' || usuario_sancionado.sanc_money);
+    END LOOP;
+END;
+--Funciones---------------------------------------------------------------------
+--1--
+CREATE OR REPLACE FUNCTION obtener_libros_prestados_usuario(in_user_id NUMBER)
+RETURN NUMBER
+IS
+    total_libros_prestados NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad total de libros prestados por un usuario
+    SELECT COUNT(*)
+    INTO total_libros_prestados
+    FROM lendings_table
+    WHERE user_id = in_user_id;
+    
+    RETURN total_libros_prestados;
+END;
+--------------------------------------------------------------------------------
+--2--
+CREATE OR REPLACE FUNCTION obtener_multas_usuario(in_user_id NUMBER)
+RETURN NUMBER
+IS
+    total_multas NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad total de multas para un usuario
+    SELECT COUNT(*)
+    INTO total_multas
+    FROM multas
+    WHERE id_users = in_user_id;
+    
+    RETURN total_multas;
+END;
+--------------------------------------------------------------------------------
+--3--
+CREATE OR REPLACE FUNCTION obtener_nombre_completo_usuario(in_user_id NUMBER)
+RETURN VARCHAR2
+IS
+    nombre_completo VARCHAR2(100);
+BEGIN
+    -- Obtener el nombre completo de un usuario
+    SELECT name || ' ' || last_name_p || ' ' || last_name_m
+    INTO nombre_completo
+    FROM users
+    WHERE id = in_user_id;
+    
+    RETURN nombre_completo;
+END;
+--------------------------------------------------------------------------------
+--4--
+CREATE OR REPLACE FUNCTION obtener_libros_por_genero(in_genre VARCHAR2)
+RETURN NUMBER
+IS
+    total_libros NUMBER := 0;
+BEGIN
+    -- Obtener el número total de libros en un género específico
+    SELECT COUNT(*)
+    INTO total_libros
+    FROM libros_generos lg
+    INNER JOIN books b ON lg.id_libros = b.id
+    WHERE lg.Nombre_Genero = in_genre;
+    
+    RETURN total_libros;
+END;
+--------------------------------------------------------------------------------
+--5--
+CREATE OR REPLACE FUNCTION obtener_nombre_autor_por_id(in_author_id NUMBER)
+RETURN VARCHAR2
+IS
+    nombre_autor VARCHAR2(100);
+BEGIN
+    -- Obtener el nombre de un autor por su ID
+    SELECT Nombre_Autor
+    INTO nombre_autor
+    FROM autores
+    WHERE ID_autor = in_author_id;
+    
+    RETURN nombre_autor;
+END;
+--------------------------------------------------------------------------------
+--6--
+CREATE OR REPLACE FUNCTION obtener_nombre_editorial_por_id(in_editorial_id NUMBER)
+RETURN VARCHAR2
+IS
+    nombre_editorial VARCHAR2(100);
+BEGIN
+    -- Obtener el nombre de una editorial por su ID
+    SELECT Nombre_editorial
+    INTO nombre_editorial
+    FROM editorial
+    WHERE ID_editorial = in_editorial_id;
+    
+    RETURN nombre_editorial;
+END;
+--------------------------------------------------------------------------------
+--7--
+CREATE OR REPLACE FUNCTION obtener_libros_por_idioma(in_idioma VARCHAR2)
+RETURN NUMBER
+IS
+    total_libros_por_idioma NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad total de libros por idioma
+    SELECT COUNT(*)
+    INTO total_libros_por_idioma
+    FROM books
+    WHERE lang = in_idioma;
+    
+    RETURN total_libros_por_idioma;
+END;
+--------------------------------------------------------------------------------
+--8--
+CREATE OR REPLACE FUNCTION obtener_prestamos_por_categoria(in_category VARCHAR2)
+RETURN NUMBER
+IS
+    total_prestamos_por_categoria NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad de préstamos por categoría de libros
+    SELECT COUNT(*)
+    INTO total_prestamos_por_categoria
+    FROM lendings_table lt
+    INNER JOIN books b ON lt.book_id = b.id
+    WHERE b.category = in_category;
+    
+    RETURN total_prestamos_por_categoria;
+END;
+--------------------------------------------------------------------------------
+--9--
+CREATE OR REPLACE FUNCTION obtener_libros_por_autor(in_author_id NUMBER)
+RETURN NUMBER
+IS
+    total_libros_por_autor NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad de libros escritos por un autor específico
+    SELECT COUNT(*)
+    INTO total_libros_por_autor
+    FROM libros_autores la
+    INNER JOIN books b ON la.id_libros = b.id
+    WHERE la.id_autor = in_author_id;
+    
+    RETURN total_libros_por_autor;
+END;
+--------------------------------------------------------------------------------
+--10--
+CREATE OR REPLACE FUNCTION obtener_prestamos_activos_usuario(in_user_id NUMBER)
+RETURN NUMBER
+IS
+    total_prestamos_activos NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad de préstamos activos de un usuario
+    SELECT COUNT(*)
+    INTO total_prestamos_activos
+    FROM lendings_table
+    WHERE user_id = in_user_id AND date_return IS NULL;
+    
+    RETURN total_prestamos_activos;
+END;
+--------------------------------------------------------------------------------
+--11--
+CREATE OR REPLACE FUNCTION obtener_libros_por_genero_idioma(in_genre VARCHAR2, in_idioma VARCHAR2)
+RETURN NUMBER
+IS
+    total_libros_por_genero_idioma NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad total de libros por género en un idioma específico
+    SELECT COUNT(*)
+    INTO total_libros_por_genero_idioma
+    FROM libros_generos lg
+    INNER JOIN books b ON lg.id_libros = b.id
+    WHERE lg.Nombre_Genero = in_genre AND b.lang = in_idioma;
+    
+    RETURN total_libros_por_genero_idioma;
+END;
+--------------------------------------------------------------------------------
+--12--
+CREATE OR REPLACE FUNCTION obtener_monto_multas_usuario(in_user_id NUMBER)
+RETURN DECIMAL
+IS
+    monto_total_multas DECIMAL(10, 2) := 0;
+BEGIN
+    -- Obtener el monto total de multas para un usuario
+    SELECT SUM(monto)
+    INTO monto_total_multas
+    FROM multas
+    WHERE id_users = in_user_id;
+    
+    RETURN monto_total_multas;
+END;
+--------------------------------------------------------------------------------
+--13--
+CREATE OR REPLACE FUNCTION obtener_libros_por_autor_idioma(in_author_id NUMBER, in_idioma VARCHAR2)
+RETURN NUMBER
+IS
+    total_libros_por_autor_idioma NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad de libros de un autor en un idioma específico
+    SELECT COUNT(*)
+    INTO total_libros_por_autor_idioma
+    FROM libros_autores la
+    INNER JOIN books b ON la.id_libros = b.id
+    WHERE la.id_autor = in_author_id AND b.lang = in_idioma;
+    
+    RETURN total_libros_por_autor_idioma;
+END;
+--------------------------------------------------------------------------------
+--14--
+CREATE OR REPLACE FUNCTION obtener_libros_por_categoria(in_category VARCHAR2)
+RETURN NUMBER
+IS
+    total_libros_por_categoria NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad total de libros en una categoría específica
+    SELECT COUNT(*)
+    INTO total_libros_por_categoria
+    FROM books
+    WHERE category = in_category;
+    
+    RETURN total_libros_por_categoria;
+END;
+--------------------------------------------------------------------------------
+--15--
+CREATE OR REPLACE FUNCTION obtener_libros_por_idioma_categoria(in_idioma VARCHAR2, in_categoria VARCHAR2)
+RETURN NUMBER
+IS
+    total_libros_por_idioma_categoria NUMBER := 0;
+BEGIN
+    -- Obtener la cantidad total de libros por idioma y categoría
+    SELECT COUNT(*)
+    INTO total_libros_por_idioma_categoria
+    FROM books
+    WHERE lang = in_idioma AND category = in_categoria;
+    
+    RETURN total_libros_por_idioma_categoria;
+END;
+--Paquetes----------------------------------------------------------------------
+--1--
+CREATE OR REPLACE PACKAGE library_mgmt AS
+    -- Estados de un préstamo
+    estado_prestado CONSTANT VARCHAR2(10) := 'Prestado';
+    estado_devuelto CONSTANT VARCHAR2(10) := 'Devuelto';
+    estado_vencido CONSTANT VARCHAR2(10) := 'Vencido';
+    
+    -- Cursor para obtener detalles de un préstamo
+    TYPE LendingDetailCursor IS REF CURSOR;
+    
+    FUNCTION get_lending_detail(p_lending_id NUMBER) RETURN LendingDetailCursor;
+    
+    -- Obtener la multa total asociada a un préstamo
+    FUNCTION obtener_multa_total(p_lending_id NUMBER) RETURN NUMBER;
+END library_mgmt;
+drop package library_mgmt;
+--Body--
+CREATE OR REPLACE PACKAGE BODY library_mgmt AS
+    -- Cursor para obtener detalles de un préstamo
+    FUNCTION get_lending_detail(p_lending_id NUMBER) RETURN LendingDetailCursor IS
+        cur LendingDetailCursor;
+    BEGIN
+        OPEN cur FOR
+            SELECT lt.id, lt.user_id, lt.book_id, lt.date_out, lt.date_return,
+                b.title, u.name || ' ' || u.last_name_p AS user_name
+            FROM lendings_table lt
+            INNER JOIN books b ON lt.book_id = b.id
+            INNER JOIN users u ON lt.user_id = u.id
+            WHERE lt.id = p_lending_id;
+
+        RETURN cur;
+    END get_lending_detail;
+
+    -- Obtener la multa total asociada a un préstamo
+    FUNCTION obtener_multa_total(p_lending_id NUMBER) RETURN NUMBER IS
+        v_multa_total NUMBER := 0;
+    BEGIN
+        -- Lógica para calcular la multa total asociada a un préstamo
+        FOR lending_rec IN (SELECT * FROM TABLE(get_lending_detail(p_lending_id))) LOOP
+            -- Lógica para calcular la multa
+            IF lending_rec.date_return IS NULL OR lending_rec.date_return > SYSDATE THEN
+                -- No hay multa si el libro no se ha devuelto o si la devolución está dentro del plazo
+                v_multa_total := 0;
+            ELSE
+                -- Ejemplo: $1 por día de retraso
+                v_multa_total := (lending_rec.date_return - lending_rec.date_out) * 1;
+            END IF;
+        END LOOP;
+        
+        RETURN v_multa_total;
+    END obtener_multa_total;
+END library_mgmt;
+--------------------------------------------------------------------------------
+--2--
+
+--------------------------------------------------------------------------------
+--3--
+
+--------------------------------------------------------------------------------
+--4--
+
+--------------------------------------------------------------------------------
+--5--
+
+--------------------------------------------------------------------------------
+--6--
+
+--------------------------------------------------------------------------------
+--7--
+
+--------------------------------------------------------------------------------
+--8--
+
+--------------------------------------------------------------------------------
+--9--
+
+--------------------------------------------------------------------------------
+--10--
+
 
 
 
