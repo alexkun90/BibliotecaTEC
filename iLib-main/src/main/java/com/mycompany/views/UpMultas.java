@@ -209,7 +209,7 @@ public class UpMultas extends javax.swing.JPanel {
             multaid.requestFocus();
             return;
         } else if (!Utils.isNumeric(mid) || !Utils.isNumeric(uid) || !Utils.isNumeric(mmonto)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Los campos Stock y Disponibles deben ser números enteros. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Los campos Monto y ID deben ser números enteros. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
             multaid.requestFocus();
             return;
         }
