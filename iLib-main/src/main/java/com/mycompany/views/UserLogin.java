@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.views;
+
+import com.mycompany.ilib.*;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
 import com.mycompany.ilib.Dashboard;
@@ -22,11 +24,12 @@ import java.util.Locale;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
+
 /**
  *
  * @author alexa
  */
-public class UserLogin extends javax.swing.JFrame{
+public class UserLogin extends javax.swing.JFrame {
 
     /**
      * Creates new form UserLogin
@@ -34,18 +37,19 @@ public class UserLogin extends javax.swing.JFrame{
     public UserLogin() {
         initComponents();
         InitStyles();
-       // InitContent();
+        // InitContent();
 
-        
     }
+
     private void InitStyles() {
         lbl_pass.putClientProperty("FlatLaf.style", "font: 14 $light.font");
         lbl_pass.setForeground(Color.black);
-        
+
     }
+
     //private void InitContent() {
-      //  Dashboard venta = new Dashboard();
-        //venta.setVisible(true);
+    //  Dashboard venta = new Dashboard();
+    //venta.setVisible(true);
     //}
     /**
      * This method is called from within the constructor to initialize the form.
@@ -163,33 +167,49 @@ public class UserLogin extends javax.swing.JFrame{
     }//GEN-LAST:event_txt_upassActionPerformed
 
     private void lbl_loginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_loginMouseClicked
-String uname = txt_uname.getText();
+        String uname = txt_uname.getText();
         char[] upass = txt_upass.getPassword();
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             String url = "jdbc:oracle:thin:@localhost:1521:orcl";
             String username = "C##admin";
             String password = "123";
-            
-            Connection conn = DriverManager.getConnection(url,username,password);
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             String sqlquery = "SELECT * FROM USERLOGIN WHERE \"USER_NAME\" =? AND \"USER_PASSWORD\" = ?";
-          
+
             PreparedStatement pst = conn.prepareStatement(sqlquery);
-            pst.setString(1,uname);
-            pst.setString(2,String.valueOf(upass));
+            pst.setString(1, uname);
+            pst.setString(2, String.valueOf(upass));
             ResultSet rs = pst.executeQuery();
-            if(!rs.next()){
-                JOptionPane.showMessageDialog(null,"Usuario y Contraseña Incorrecta" );
-            }else{
+            if (!rs.next()) {
+
+                String tiporol = rs.getString("USER_ROLE");
+                if (tiporol.equalsIgnoreCase("Admin")) {
+                    dispose();
+                    DashboardAdmin adminlog = new DashboardAdmin();
+                    adminlog.setDato(txt_uname.getText());
+                    adminlog.setVisible(true);
+
+                } else if (tiporol.equalsIgnoreCase("Regular")) {
+                    dispose();
+                    Dashboard venta = new Dashboard();
+                    venta.setDato(txt_uname.getText());
+                    venta.setVisible(true);
+
+                }
+
+                JOptionPane.showMessageDialog(null, "Usuario y Contraseña Incorrecta");
+            } else {
                 JOptionPane.showMessageDialog(null, "Login Successful");
                 this.setVisible(false);
                 Dashboard venta = new Dashboard();
                 venta.setDato(txt_uname.getText());
                 venta.setVisible(true);
             }
-            
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,e);
+            JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_lbl_loginMouseClicked
 
@@ -197,7 +217,6 @@ String uname = txt_uname.getText();
 
         this.dispose();
         new Register().show();
-
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel4MouseClicked
@@ -207,27 +226,8 @@ String uname = txt_uname.getText();
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        FlatMaterialLighterIJTheme.setup();
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

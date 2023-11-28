@@ -55,6 +55,12 @@ public class Users extends javax.swing.JPanel {
 
         title.setText("Usuarios");
 
+        userSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userSearchActionPerformed(evt);
+            }
+        });
+
         searchButton.setBackground(new java.awt.Color(204, 153, 0));
         searchButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         searchButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -241,6 +247,10 @@ public class Users extends javax.swing.JPanel {
             System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void userSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userSearchActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
