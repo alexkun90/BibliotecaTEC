@@ -26,7 +26,7 @@ public class Multas extends javax.swing.JPanel {
         try {
             DAOMultas dao = new DAOMultasImpl();
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            dao.listar().forEach((u) -> model.addRow(new Object[]{u.getId_multa(), u.getId_users(), u.getMonto(), 
+            dao.listar("").forEach((u) -> model.addRow(new Object[]{u.getId_multa(), u.getId_users(), u.getMonto(), 
                 u.getFecha_vencimiento(), u.getEstado_multa()}));
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -104,13 +104,7 @@ public class Multas extends javax.swing.JPanel {
         jTable1.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Codigo Multa", "ID Usuario", "Monto", "Fecha Vencimiento", "Estado"
@@ -190,7 +184,7 @@ public class Multas extends javax.swing.JPanel {
             DAOMultas dao = new DAOMultasImpl();
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
-            dao.listar().forEach((u) -> model.addRow(new Object[]{u.getId_multa(), u.getId_users(), u.getMonto(), 
+            dao.listar(multaSearch.getText()).forEach((u) -> model.addRow(new Object[]{u.getId_multa(), u.getId_users(), u.getMonto(), 
                 u.getFecha_vencimiento(), u.getEstado_multa()}));
         } catch (Exception e) {
             System.out.println(e.getMessage());
