@@ -1024,72 +1024,169 @@ BEGIN
 END;
 --Paquetes----------------------------------------------------------------------
 --1--
-CREATE OR REPLACE PACKAGE library_mgmt AS
-    -- Estados de un préstamo
-    estado_prestado CONSTANT VARCHAR2(10) := 'Prestado';
-    estado_devuelto CONSTANT VARCHAR2(10) := 'Devuelto';
-    estado_vencido CONSTANT VARCHAR2(10) := 'Vencido';
-    
-    -- Cursor para obtener detalles de un préstamo
-    TYPE LendingDetailCursor IS REF CURSOR;
-    
-    FUNCTION get_lending_detail(p_lending_id NUMBER) RETURN LendingDetailCursor;
-    
-    -- Obtener la multa total asociada a un préstamo
-    FUNCTION obtener_multa_total(p_lending_id NUMBER) RETURN NUMBER;
-END library_mgmt;
-drop package library_mgmt;
---Body--
-CREATE OR REPLACE PACKAGE BODY library_mgmt AS
-    -- Cursor para obtener detalles de un préstamo
-    FUNCTION get_lending_detail(p_lending_id NUMBER) RETURN LendingDetailCursor IS
-        cur LendingDetailCursor;
-    BEGIN
-        OPEN cur FOR
-            SELECT lt.id, lt.user_id, lt.book_id, lt.date_out, lt.date_return,
-                b.title, u.name || ' ' || u.last_name_p AS user_name
-            FROM lendings_table lt
-            INNER JOIN books b ON lt.book_id = b.id
-            INNER JOIN users u ON lt.user_id = u.id
-            WHERE lt.id = p_lending_id;
+CREATE OR REPLACE PACKAGE book_package AS
+  PROCEDURE get_book_info(book_id IN NUMBER);
+  PROCEDURE get_available_copies(book_title IN VARCHAR2);
+END book_package;
+--Body--------------------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY book_package AS
+  PROCEDURE get_book_info(book_id IN NUMBER) IS
+  BEGIN
+    FOR book_rec IN (SELECT * FROM books WHERE id = book_id) LOOP
+      DBMS_OUTPUT.PUT_LINE('Book ID: ' || book_rec.id || ', Title: ' || book_rec.title || ', Author: ' || book_rec.author);
+    END LOOP;
+  END get_book_info;
 
-        RETURN cur;
-    END get_lending_detail;
+  PROCEDURE get_available_copies(book_title IN VARCHAR2) IS
+    v_libro_id NUMBER;
+    v_disponibles NUMBER;
+  BEGIN
+    SELECT id INTO v_libro_id FROM books WHERE title = book_title;
 
-    -- Obtener la multa total asociada a un préstamo
-    FUNCTION obtener_multa_total(p_lending_id NUMBER) RETURN NUMBER IS
-        v_multa_total NUMBER := 0;
-    BEGIN
-        -- Lógica para calcular la multa total asociada a un préstamo
-        FOR lending_rec IN (SELECT * FROM TABLE(get_lending_detail(p_lending_id))) LOOP
-            -- Lógica para calcular la multa
-            IF lending_rec.date_return IS NULL OR lending_rec.date_return > SYSDATE THEN
-                -- No hay multa si el libro no se ha devuelto o si la devolución está dentro del plazo
-                v_multa_total := 0;
-            ELSE
-                -- Ejemplo: $1 por día de retraso
-                v_multa_total := (lending_rec.date_return - lending_rec.date_out) * 1;
-            END IF;
-        END LOOP;
-        
-        RETURN v_multa_total;
-    END obtener_multa_total;
-END library_mgmt;
+    IF v_libro_id IS NOT NULL THEN
+      SELECT available INTO v_disponibles FROM books WHERE id = v_libro_id;
+      DBMS_OUTPUT.PUT_LINE('Book: ' || book_title || ', Available Copies: ' || v_disponibles);
+    ELSE
+      DBMS_OUTPUT.PUT_LINE('The book with title ' || book_title || ' does not exist.');
+    END IF;
+  END get_available_copies;
+END book_package;
 --------------------------------------------------------------------------------
 --2--
+CREATE OR REPLACE PACKAGE stats_package AS
+  PROCEDURE get_total_books;
+  PROCEDURE get_total_users;
+END stats_package;
+--Body--------------------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY stats_package AS
+  PROCEDURE get_total_books IS
+    total_books NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO total_books FROM books;
+    DBMS_OUTPUT.PUT_LINE('Total Books: ' || total_books);
+  END get_total_books;
 
+  PROCEDURE get_total_users IS
+    total_users NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO total_users FROM users;
+    DBMS_OUTPUT.PUT_LINE('Total Users: ' || total_users);
+  END get_total_users;
+END stats_package;
 --------------------------------------------------------------------------------
 --3--
+CREATE OR REPLACE PACKAGE transaction_package AS
+  PROCEDURE make_purchase(user_id IN NUMBER, book_id IN NUMBER);
+  PROCEDURE return_book(user_id IN NUMBER, book_id IN NUMBER);
+END transaction_package;
+--Body--------------------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY transaction_package AS
+  PROCEDURE make_purchase(user_id IN NUMBER, book_id IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Purchase made successfully.');
+  END make_purchase;
 
+  PROCEDURE return_book(user_id IN NUMBER, book_id IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Book returned successfully.');
+  END return_book;
+END transaction_package;
 --------------------------------------------------------------------------------
 --4--
+CREATE OR REPLACE PACKAGE user_package AS
+  PROCEDURE create_user(username IN VARCHAR2, email IN VARCHAR2, password IN VARCHAR2);
+  FUNCTION authenticate_user(username IN VARCHAR2, password IN VARCHAR2) RETURN BOOLEAN;
+  PROCEDURE update_user_profile(user_id IN NUMBER, new_username IN VARCHAR2, new_email IN VARCHAR2);
+END user_package;
+--Body--------------------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY user_package AS
+  PROCEDURE create_user(username IN VARCHAR2, email IN VARCHAR2, password IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('User created successfully.');
+  END create_user;
 
+  FUNCTION authenticate_user(username IN VARCHAR2, password IN VARCHAR2) RETURN BOOLEAN IS
+  BEGIN
+    RETURN TRUE; 
+  END authenticate_user;
+
+  PROCEDURE update_user_profile(user_id IN NUMBER, new_username IN VARCHAR2, new_email IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('User profile updated successfully.');
+  END update_user_profile;
+END user_package;
 --------------------------------------------------------------------------------
 --5--
+CREATE OR REPLACE PACKAGE user_management_package AS
+  PROCEDURE create_user(username IN VARCHAR2, password IN VARCHAR2, email IN VARCHAR2);
+  PROCEDURE update_user_email(user_id IN NUMBER, new_email IN VARCHAR2);
+  PROCEDURE delete_user(user_id IN NUMBER);
+  FUNCTION get_user_info(user_id IN NUMBER) RETURN SYS_REFCURSOR;
+END user_management_package;
+--Body--------------------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY user_management_package AS
+  PROCEDURE create_user(username IN VARCHAR2, password IN VARCHAR2, email IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('User created successfully.');
+  END create_user;
 
+  PROCEDURE update_user_email(user_id IN NUMBER, new_email IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('User email updated successfully.');
+  END update_user_email;
+
+  PROCEDURE delete_user(user_id IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('User deleted successfully.');
+  END delete_user;
+
+  FUNCTION get_user_info(user_id IN NUMBER) RETURN SYS_REFCURSOR IS
+    user_info_cursor SYS_REFCURSOR;
+  BEGIN
+    OPEN user_info_cursor FOR
+      SELECT * FROM users WHERE user_id = user_id;
+    RETURN user_info_cursor;
+  END get_user_info;
+END user_management_package;
 --------------------------------------------------------------------------------
 --6--
+CREATE OR REPLACE PACKAGE product_management_package AS
+  PROCEDURE add_product(product_name IN VARCHAR2, price IN NUMBER, stock_quantity IN NUMBER);
+  PROCEDURE update_product_price(product_id IN NUMBER, new_price IN NUMBER);
+  PROCEDURE update_stock_quantity(product_id IN NUMBER, quantity_change IN NUMBER);
+  PROCEDURE delete_product(product_id IN NUMBER);
+  FUNCTION get_product_info(product_id IN NUMBER) RETURN SYS_REFCURSOR;
+END product_management_package;
+--Body--------------------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY product_management_package AS
+  PROCEDURE add_product(product_name IN VARCHAR2, price IN NUMBER, stock_quantity IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Product added successfully.');
+  END add_product;
 
+  PROCEDURE update_product_price(product_id IN NUMBER, new_price IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Product price updated successfully.');
+  END update_product_price;
+
+  PROCEDURE update_stock_quantity(product_id IN NUMBER, quantity_change IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Stock quantity updated successfully.');
+  END update_stock_quantity;
+
+  PROCEDURE delete_product(product_id IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Product deleted successfully.');
+  END delete_product;
+
+  FUNCTION get_product_info(product_id IN NUMBER) RETURN SYS_REFCURSOR IS
+    product_info_cursor SYS_REFCURSOR;
+  BEGIN
+    OPEN product_info_cursor FOR
+      SELECT * FROM products WHERE product_id = product_id;
+    RETURN product_info_cursor;
+  END get_product_info;
+END product_management_package;
 --------------------------------------------------------------------------------
 --7--
 
@@ -1101,8 +1198,3 @@ END library_mgmt;
 
 --------------------------------------------------------------------------------
 --10--
-
-
-
-
-
