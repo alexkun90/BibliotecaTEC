@@ -1282,7 +1282,6 @@ CREATE OR REPLACE PACKAGE BODY author_package AS
   FUNCTION get_books_by_author(author_id IN NUMBER) RETURN SYS_REFCURSOR IS
     books_cursor SYS_REFCURSOR;
   BEGIN
-    -- Obtener los libros escritos por un autor específico
     OPEN books_cursor FOR
       SELECT b.id, b.title, b.category
       FROM libros_autores la
