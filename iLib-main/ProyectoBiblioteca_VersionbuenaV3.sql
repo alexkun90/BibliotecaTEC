@@ -1189,12 +1189,106 @@ CREATE OR REPLACE PACKAGE BODY product_management_package AS
 END product_management_package;
 --------------------------------------------------------------------------------
 --7--
+CREATE OR REPLACE PACKAGE security_package AS
+  PROCEDURE grant_access(user_id IN NUMBER, resource_name IN VARCHAR2);
+  PROCEDURE revoke_access(user_id IN NUMBER, resource_name IN VARCHAR2);
+END security_package;
 
+CREATE OR REPLACE PACKAGE BODY security_package AS
+  PROCEDURE grant_access(user_id IN NUMBER, resource_name IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Access granted to ' || resource_name || ' for user ' || user_id);
+  END grant_access;
+
+  PROCEDURE revoke_access(user_id IN NUMBER, resource_name IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Access revoked from ' || resource_name || ' for user ' || user_id);
+  END revoke_access;
+END security_package;
 --------------------------------------------------------------------------------
 --8--
+CREATE OR REPLACE PACKAGE message_management_package AS
+  PROCEDURE send_email(recipient_email IN VARCHAR2, subject IN VARCHAR2, message_text IN VARCHAR2);
+  PROCEDURE send_sms(phone_number IN VARCHAR2, message_text IN VARCHAR2);
+END message_management_package;
 
+CREATE OR REPLACE PACKAGE BODY message_management_package AS
+  PROCEDURE send_email(recipient_email IN VARCHAR2, subject IN VARCHAR2, message_text IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Email sent to ' || recipient_email || ' with subject: ' || subject);
+  END send_email;
+
+  PROCEDURE send_sms(phone_number IN VARCHAR2, message_text IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('SMS sent to ' || phone_number);
+  END send_sms;
+END message_management_package;
 --------------------------------------------------------------------------------
 --9--
+CREATE OR REPLACE PACKAGE lending_package AS
+  PROCEDURE borrow_book(user_id IN NUMBER, book_id IN NUMBER);
+  PROCEDURE return_book(lending_id IN NUMBER);
+  FUNCTION get_user_lendings(user_id IN NUMBER) RETURN SYS_REFCURSOR;
+END lending_package;
 
+CREATE OR REPLACE PACKAGE BODY lending_package AS
+  PROCEDURE borrow_book(user_id IN NUMBER, book_id IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Book borrowed successfully by User ID: ' || user_id);
+  END borrow_book;
+
+  PROCEDURE return_book(lending_id IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Book returned successfully for Lending ID: ' || lending_id);
+  END return_book;
+
+  FUNCTION get_user_lendings(user_id IN NUMBER) RETURN SYS_REFCURSOR IS
+    lendings_cursor SYS_REFCURSOR;
+  BEGIN
+    OPEN lendings_cursor FOR
+      SELECT lt.id, lt.date_out, lt.date_return, b.title
+      FROM lendings_table lt
+      INNER JOIN books b ON lt.book_id = b.id
+      WHERE lt.user_id = user_id;
+      
+    RETURN lendings_cursor;
+  END get_user_lendings;
+END lending_package;
 --------------------------------------------------------------------------------
 --10--
+CREATE OR REPLACE PACKAGE author_package AS
+  PROCEDURE add_author(author_name IN VARCHAR2);
+  PROCEDURE update_author(author_id IN NUMBER, new_name IN VARCHAR2);
+  PROCEDURE delete_author(author_id IN NUMBER);
+  FUNCTION get_books_by_author(author_id IN NUMBER) RETURN SYS_REFCURSOR;
+END author_package;
+
+CREATE OR REPLACE PACKAGE BODY author_package AS
+  PROCEDURE add_author(author_name IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Author added successfully: ' || author_name);
+  END add_author;
+
+  PROCEDURE update_author(author_id IN NUMBER, new_name IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Author updated successfully. New name: ' || new_name);
+  END update_author;
+
+  PROCEDURE delete_author(author_id IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Author deleted successfully. Author ID: ' || author_id);
+  END delete_author;
+
+  FUNCTION get_books_by_author(author_id IN NUMBER) RETURN SYS_REFCURSOR IS
+    books_cursor SYS_REFCURSOR;
+  BEGIN
+    -- Obtener los libros escritos por un autor específico
+    OPEN books_cursor FOR
+      SELECT b.id, b.title, b.category
+      FROM libros_autores la
+      INNER JOIN books b ON la.id_libros = b.id
+      WHERE la.id_autor = author_id;
+      
+    RETURN books_cursor;
+  END get_books_by_author;
+END author_package;
