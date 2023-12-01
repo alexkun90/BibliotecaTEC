@@ -84,8 +84,8 @@ public class DAOEmpleadosImpl extends Database implements DAOEmplo {
             while (rs.next()) {
                 Empleados empleado = new Empleados();
                 empleado.setID(rs.getInt("ID"));
-                empleado.setLNAME(rs.getString("FNAME"));
-                empleado.setFNAME(rs.getString("LNAME"));
+                empleado.setLNAME(rs.getString("LNAME"));
+                empleado.setFNAME(rs.getString("FNAME"));
                 empleado.setMNAME(rs.getString("MNAME"));
                 empleado.setBIRTH_DATE(rs.getDate("BIRTH_DATE "));
                 empleado.setUSER_ROLE(rs.getString("USER_ROLE"));
@@ -113,8 +113,8 @@ public class DAOEmpleadosImpl extends Database implements DAOEmplo {
             while (rs.next()) {
                 empleado = new Empleados();
                 empleado.setID(rs.getInt("ID"));
-                empleado.setLNAME(rs.getString("FNAME"));
-                empleado.setFNAME(rs.getString("LNAME"));
+                empleado.setLNAME(rs.getString("LNAME"));
+                empleado.setFNAME(rs.getString("FNAME"));
                 empleado.setMNAME(rs.getString("MNAME"));
                 empleado.setBIRTH_DATE(rs.getDate("BIRTH_DATE "));
                 empleado.setUSER_ROLE(rs.getString("USER_ROLE"));

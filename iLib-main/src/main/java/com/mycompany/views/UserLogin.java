@@ -182,7 +182,7 @@ public class UserLogin extends javax.swing.JFrame {
             pst.setString(1, uname);
             pst.setString(2, String.valueOf(upass));
             ResultSet rs = pst.executeQuery();
-            if (!rs.next()) {
+            if (rs.next()) {
 
                 String tiporol = rs.getString("USER_ROLE");
                 if (tiporol.equalsIgnoreCase("Admin")) {
@@ -190,24 +190,16 @@ public class UserLogin extends javax.swing.JFrame {
                     DashboardAdmin adminlog = new DashboardAdmin();
                     adminlog.setDato(txt_uname.getText());
                     adminlog.setVisible(true);
+                        JOptionPane.showMessageDialog(null, "Login Successful Admin");
 
                 } else if (tiporol.equalsIgnoreCase("Regular")) {
                     dispose();
                     Dashboard venta = new Dashboard();
                     venta.setDato(txt_uname.getText());
                     venta.setVisible(true);
-
+                        JOptionPane.showMessageDialog(null, "Login Successful");
                 }
-
-                JOptionPane.showMessageDialog(null, "Usuario y Contraseña Incorrecta");
-            } else {
-                JOptionPane.showMessageDialog(null, "Login Successful");
-                this.setVisible(false);
-                Dashboard venta = new Dashboard();
-                venta.setDato(txt_uname.getText());
-                venta.setVisible(true);
-            }
-
+            } 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }

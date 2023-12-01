@@ -210,7 +210,7 @@ public class UpEmple extends javax.swing.JPanel {
         DAOEmplo dao = new DAOEmpleadosImpl();
         DefaultTableModel model = (DefaultTableModel) jtb_emple.getModel();
         if (jtb_emple.getSelectedRows().length < 1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Debes seleccionar uno o más usuarios a eliminar.\n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Debes seleccionar uno o mas usuarios a eliminar.\n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
         } else {
             for (int i : jtb_emple.getSelectedRows()) {
                 try {

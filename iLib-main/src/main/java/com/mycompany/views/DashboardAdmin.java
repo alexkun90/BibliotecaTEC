@@ -351,7 +351,7 @@ public class DashboardAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_returnsActionPerformed
 
     private void btn_adminusersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adminusersActionPerformed
-       ShowJPanel(new RegisterAdmin());
+       ShowJPanel(new UpEmple());
     }//GEN-LAST:event_btn_adminusersActionPerformed
 
     private void btn_booksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_booksActionPerformed

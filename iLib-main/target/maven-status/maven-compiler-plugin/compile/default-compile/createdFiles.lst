@@ -1,3 +1,4 @@
+com\mycompany\models\Empleados.class
 com\mycompany\models\Lendings.class
 com\mycompany\utils\Utils.class
 com\mycompany\views\DashboardAdmin$6.class
@@ -11,8 +12,11 @@ com\mycompany\views\Register$5.class
 com\mycompany\views\UserLogin.class
 com\mycompany\ilib\Dashboard$2.class
 com\mycompany\views\UpUsers.class
+com\mycompany\views\UpEmple$5.class
+com\mycompany\views\RegisterEmple.class
 com\mycompany\ilib\Dashboard.class
 com\mycompany\views\DashboardAdmin$3.class
+com\mycompany\views\UpEmple$2.class
 com\mycompany\views\UpMultas$2.class
 com\mycompany\interfaces\DAOMultas.class
 com\mycompany\views\Reports$2.class
@@ -22,7 +26,9 @@ com\mycompany\views\Multas.class
 com\mycompany\views\RegisterAdmin$4.class
 com\mycompany\views\Books$4.class
 com\mycompany\views\Users$6.class
+com\mycompany\ilib\DAOEmpleadosImpl.class
 com\mycompany\ilib\DAOUsersImpl.class
+com\mycompany\views\UpEmple$6.class
 com\mycompany\ilib\Dashboard$3.class
 com\mycompany\views\UpUsers$1.class
 com\mycompany\views\Books.class
@@ -30,6 +36,7 @@ com\mycompany\views\UpBooks$2.class
 com\mycompany\views\UserLogin$1.class
 com\mycompany\views\Users$5.class
 com\mycompany\views\Books$5.class
+com\mycompany\views\UpEmple$7.class
 com\mycompany\views\Register$6.class
 com\mycompany\views\RegisterAdmin.class
 com\mycompany\ilib\DAOLendingsImpl.class
@@ -41,6 +48,7 @@ com\mycompany\db\Database.class
 com\mycompany\ilib\Dashboard$4.class
 com\mycompany\views\Lendings$1.class
 com\mycompany\views\Reports$3.class
+com\mycompany\views\UpEmple$1.class
 com\mycompany\views\Users$4.class
 com\mycompany\views\Register$1.class
 com\mycompany\views\Books$6.class
@@ -53,6 +61,8 @@ com\mycompany\ilib\Dashboard$6.class
 com\mycompany\ilib\DAOBooksImpl.class
 com\mycompany\views\Register$4.class
 com\mycompany\views\Books$3.class
+com\mycompany\views\RegisterEmple$1.class
+com\mycompany\views\Users$7.class
 com\mycompany\models\Multas.class
 com\mycompany\views\DashboardAdmin$5.class
 com\mycompany\views\UserLogin$3.class
@@ -69,19 +79,24 @@ com\mycompany\ilib\Dashboard$7.class
 com\mycompany\views\DashboardAdmin$1.class
 com\mycompany\views\UpMultas$1.class
 com\mycompany\views\Register.class
+com\mycompany\views\RegisterEmple$2.class
 com\mycompany\views\Users$3.class
 com\mycompany\models\Books.class
 com\mycompany\views\Books$1.class
 com\mycompany\views\UserLogin$4.class
 com\mycompany\interfaces\DAOLendings.class
 com\mycompany\views\DashboardAdmin$8.class
+com\mycompany\views\UpEmple$3.class
 com\mycompany\views\Register$3.class
 com\mycompany\views\UpBooks.class
+com\mycompany\views\UpEmple.class
 com\mycompany\ilib\Dashboard$1.class
 com\mycompany\views\Multas$1.class
 com\mycompany\views\Register$2.class
 com\mycompany\views\UpMultas.class
+com\mycompany\interfaces\DAOEmplo.class
 com\mycompany\views\Returns$1.class
+com\mycompany\views\UpEmple$4.class
 com\mycompany\views\Users$2.class
 com\mycompany\views\DashboardAdmin$7.class
 com\mycompany\views\UserLogin$5.class
