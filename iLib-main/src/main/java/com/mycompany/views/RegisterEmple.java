@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 public class RegisterEmple extends javax.swing.JPanel {
 
     boolean isEdition = false;
-    com.mycompany.models.Empleados userEdition;
+    com.mycompany.models.Empleados empleadoEdition;
     
     public RegisterEmple() {
         initComponents();
@@ -25,7 +25,7 @@ public class RegisterEmple extends javax.swing.JPanel {
     public RegisterEmple(com.mycompany.models.Empleados empleado) {
         initComponents();
         isEdition = true;
-        userEdition = empleado;
+        empleadoEdition = empleado;
         InitStyles();
     }
 
@@ -44,17 +44,14 @@ public class RegisterEmple extends javax.swing.JPanel {
             title.setText("Editar Empleado");
             btn_register.setText("Guardar");
 
-            if (userEdition != null) {
-                
-                int valorEntero = userEdition.getID();
+            if (empleadoEdition != null) {
+                int valorEntero = empleadoEdition.getID();
                 txt_id.setText("" + valorEntero);
-                txt_lname.setText(userEdition.getLNAME());
-                txt_fname.setText(userEdition.getFNAME());
-                txt_mname.setText(userEdition.getMNAME());
-                
-                txt_uname.setText(userEdition.getUSER_NAME());
-                txt_upass.setText(userEdition.getUSER_PASSWORD());
-                
+                txt_lname.setText(empleadoEdition.getLNAME());
+                txt_fname.setText(empleadoEdition.getFNAME());
+                txt_mname.setText(empleadoEdition.getMNAME());
+                txt_uname.setText(empleadoEdition.getUSER_NAME());
+                txt_upass.setText(empleadoEdition.getUSER_PASSWORD());
             }
         }
     }

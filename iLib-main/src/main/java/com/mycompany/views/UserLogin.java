@@ -65,13 +65,13 @@ public class UserLogin extends javax.swing.JFrame {
         txt_uname = new javax.swing.JTextField();
         lbl_pass = new javax.swing.JLabel();
         txt_upass = new javax.swing.JPasswordField();
-        lbl_login = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        btn_login = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("USERLOGIN"));
 
+        lbl_user.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbl_user.setText("User");
 
         txt_uname.addActionListener(new java.awt.event.ActionListener() {
@@ -80,6 +80,7 @@ public class UserLogin extends javax.swing.JFrame {
             }
         });
 
+        lbl_pass.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbl_pass.setText("Password");
 
         txt_upass.addActionListener(new java.awt.event.ActionListener() {
@@ -88,19 +89,12 @@ public class UserLogin extends javax.swing.JFrame {
             }
         });
 
-        lbl_login.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
-        lbl_login.setText("Login");
-        lbl_login.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl_loginMouseClicked(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
-        jLabel4.setText("Registrarse");
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel4MouseClicked(evt);
+        btn_login.setBackground(new java.awt.Color(246, 233, 206));
+        btn_login.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
+        btn_login.setText("Login");
+        btn_login.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_loginActionPerformed(evt);
             }
         });
 
@@ -109,21 +103,17 @@ public class UserLogin extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(lbl_user, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(73, 73, 73)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
-                        .addComponent(lbl_login, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txt_upass, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_uname, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_pass)
+                    .addComponent(lbl_user, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_login, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txt_upass, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                        .addComponent(txt_uname, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,11 +126,9 @@ public class UserLogin extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_upass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_pass))
-                .addGap(44, 44, 44)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_login)
-                    .addComponent(jLabel4))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGap(39, 39, 39)
+                .addComponent(btn_login)
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -166,7 +154,7 @@ public class UserLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_upassActionPerformed
 
-    private void lbl_loginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_loginMouseClicked
+    private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
         String uname = txt_uname.getText();
         char[] upass = txt_upass.getPassword();
         try {
@@ -190,28 +178,19 @@ public class UserLogin extends javax.swing.JFrame {
                     DashboardAdmin adminlog = new DashboardAdmin();
                     adminlog.setDato(txt_uname.getText());
                     adminlog.setVisible(true);
-                        JOptionPane.showMessageDialog(null, "Login Successful Admin");
+                    JOptionPane.showMessageDialog(null, "Login Successful Admin");
 
                 } else if (tiporol.equalsIgnoreCase("Regular")) {
                     dispose();
                     Dashboard venta = new Dashboard();
                     venta.setDato(txt_uname.getText());
                     venta.setVisible(true);
-                        JOptionPane.showMessageDialog(null, "Login Successful");
+                    JOptionPane.showMessageDialog(null, "Login Successful");
                 }
-            } 
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-    }//GEN-LAST:event_lbl_loginMouseClicked
-
-    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-
-        this.dispose();
-        new Register().show();
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel4MouseClicked
+        }    }//GEN-LAST:event_btn_loginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,9 +209,8 @@ public class UserLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton btn_login;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lbl_login;
     private javax.swing.JLabel lbl_pass;
     private javax.swing.JLabel lbl_user;
     private javax.swing.JTextField txt_uname;

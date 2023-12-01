@@ -16,15 +16,14 @@ public class DAOEmpleadosImpl extends Database implements DAOEmplo {
     public void registrar(Empleados empleado) throws Exception {
         try {
             this.Conectar();
-            PreparedStatement st = this.conexion.prepareStatement("INSERT INTO USERLOGIN(ID,\"LNAME\",\"FNAME\",\"MNAME\",\"BIRTH_DATE\",\"USER_ROLE\",\"USER_NAME\",\"USER_PASSWORD\") VALUES(?,?,?,?,?,?,?,?)");
-                st.setInt(1, empleado.getID());
-                st.setString(2, empleado.getLNAME());
-                st.setString(3, empleado.getFNAME());
-                st.setString(4, empleado.getMNAME());
-                st.setDate(5, (Date) empleado.getBIRTH_DATE());
-                st.setString(6, empleado.getUSER_ROLE());
-                st.setString(7, empleado.getUSER_NAME());
-                st.setString(8, empleado.getUSER_PASSWORD());
+            PreparedStatement st = this.conexion.prepareStatement("INSERT INTO USERLOGIN(FNAME, LNAME, MNAME, BIRTH_DATE, USER_NAME, USER_PASSWORD) VALUES(?,?,?,?,?,?)");
+            st.setString(1, empleado.getFNAME());
+            st.setString(2, empleado.getLNAME());
+            st.setString(3, empleado.getMNAME());
+            // Ajusta según la forma en que manejes las fechas en tu aplicación
+            st.setDate(4, new java.sql.Date(empleado.getBIRTH_DATE().getTime()));
+            st.setString(5, empleado.getUSER_NAME());
+            st.setString(6, empleado.getUSER_PASSWORD());
             st.executeUpdate();
         } catch (Exception e) {
             throw e;
@@ -37,15 +36,14 @@ public class DAOEmpleadosImpl extends Database implements DAOEmplo {
     public void modificar(Empleados empleado) throws Exception {
         try {
             this.Conectar();
-            PreparedStatement st = this.conexion.prepareStatement("UPDATE USERLOGIN SET FNAME = ?, LNAME = ?, MNAME = ?, BIRTH_DATE = ?, USER_ROLE = ?, USER_NAME = ?, USER_PASSWORD = ? WHERE ID = ?");
-                st.setInt(1, empleado.getID());
-                st.setString(2, empleado.getLNAME());
-                st.setString(3, empleado.getFNAME());
-                st.setString(4, empleado.getMNAME());
-                st.setDate(5, (Date) empleado.getBIRTH_DATE());
-                st.setString(6, empleado.getUSER_ROLE());
-                st.setString(7, empleado.getUSER_NAME());
-                st.setString(8, empleado.getUSER_PASSWORD());
+            PreparedStatement st = this.conexion.prepareStatement("UPDATE USERLOGIN SET FNAME = ?, LNAME = ?, MNAME = ?, BIRTH_DATE = ?, USER_NAME = ?, USER_PASSWORD = ? WHERE ID = ?");
+            st.setString(1, empleado.getFNAME());
+            st.setString(2, empleado.getLNAME());
+            st.setString(3, empleado.getMNAME());
+            st.setDate(4, new java.sql.Date(empleado.getBIRTH_DATE().getTime()));
+            st.setString(5, empleado.getUSER_NAME());
+            st.setString(6, empleado.getUSER_PASSWORD());
+            st.setInt(7, empleado.getID());
             st.executeUpdate();
         } catch (Exception e) {
             throw e;
@@ -69,14 +67,14 @@ public class DAOEmpleadosImpl extends Database implements DAOEmplo {
     }
 
     @Override
-    public List<Empleados> listar(String fname) throws Exception {
+    public List<Empleados> listar(String name) throws Exception {
         List<Empleados> lista = null;
         try {
             this.Conectar();
-            String query = fname.isEmpty() ? "SELECT * FROM USERLOGIN" : "SELECT * FROM USERLOGIN WHERE FNAME LIKE ?";
+            String query = name.isEmpty() ? "SELECT * FROM USERLOGIN" : "SELECT * FROM USERLOGIN WHERE FNAME LIKE ?";
             PreparedStatement st = this.conexion.prepareStatement(query);
-            if (!fname.isEmpty()) {
-                st.setString(1, "%" + fname + "%");
+            if (!name.isEmpty()) {
+                st.setString(1, "%" + name + "%");
             }
 
             lista = new ArrayList<>();
@@ -84,10 +82,10 @@ public class DAOEmpleadosImpl extends Database implements DAOEmplo {
             while (rs.next()) {
                 Empleados empleado = new Empleados();
                 empleado.setID(rs.getInt("ID"));
-                empleado.setLNAME(rs.getString("LNAME"));
                 empleado.setFNAME(rs.getString("FNAME"));
+                empleado.setLNAME(rs.getString("LNAME"));
                 empleado.setMNAME(rs.getString("MNAME"));
-                empleado.setBIRTH_DATE(rs.getDate("BIRTH_DATE "));
+                empleado.setBIRTH_DATE(rs.getDate("BIRTH_DATE"));
                 empleado.setUSER_ROLE(rs.getString("USER_ROLE"));
                 empleado.setUSER_NAME(rs.getString("USER_NAME"));
                 empleado.setUSER_PASSWORD(rs.getString("USER_PASSWORD"));
@@ -102,7 +100,7 @@ public class DAOEmpleadosImpl extends Database implements DAOEmplo {
     }
 
     @Override
-    public Empleados getUserById(int empleadoId) throws Exception {
+    public Empleados getEmpleadoById(int empleadoId) throws Exception {
         Empleados empleado = null;
         try {
             this.Conectar();
@@ -113,10 +111,10 @@ public class DAOEmpleadosImpl extends Database implements DAOEmplo {
             while (rs.next()) {
                 empleado = new Empleados();
                 empleado.setID(rs.getInt("ID"));
-                empleado.setLNAME(rs.getString("LNAME"));
                 empleado.setFNAME(rs.getString("FNAME"));
+                empleado.setLNAME(rs.getString("LNAME"));
                 empleado.setMNAME(rs.getString("MNAME"));
-                empleado.setBIRTH_DATE(rs.getDate("BIRTH_DATE "));
+                empleado.setBIRTH_DATE(rs.getDate("BIRTH_DATE"));
                 empleado.setUSER_ROLE(rs.getString("USER_ROLE"));
                 empleado.setUSER_NAME(rs.getString("USER_NAME"));
                 empleado.setUSER_PASSWORD(rs.getString("USER_PASSWORD"));
@@ -128,21 +126,4 @@ public class DAOEmpleadosImpl extends Database implements DAOEmplo {
         }
         return empleado;
     }
-
-    /*@Override
-    public void sancionar(Empleados user) throws Exception {
-        try {
-            this.Conectar();
-            PreparedStatement st = this.conexion.prepareStatement("UPDATE users SET sanctions = ?, sanc_money = ? WHERE id = ?");
-            st.setInt(1, user.getSanctions());
-            st.setInt(2, user.getSanc_money());
-            st.setInt(3, user.getId());
-            st.executeUpdate();
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            this.Cerrar();
-        }
-    }*/
 }
-

@@ -16,6 +16,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
@@ -30,14 +31,14 @@ public class DashboardAdmin extends javax.swing.JFrame {
      * Creates new form Dashboard
      */
     private String dato;
-    
+
     public DashboardAdmin() {
         initComponents();
         InitStyles();
         SetDate();
         InitContent();
     }
-    
+
     public void InitStyles() {
         lbl_user.putClientProperty("FlatLaf.style", "font: 35 $light.font");
         lbl_user.setForeground(Color.black);
@@ -48,31 +49,32 @@ public class DashboardAdmin extends javax.swing.JFrame {
         appName.putClientProperty("FlatLaf.style", "font: bold $h1.regular.font");
         appName.setForeground(Color.white);
     }
-    
+
     public void SetDate() {
         LocalDate now = LocalDate.now();
         Locale spanishLocale = new Locale("es", "ES");
         dateText.setText(now.format(DateTimeFormatter.ofPattern("'Hoy es' EEEE dd 'de' MMMM 'de' yyyy", spanishLocale)));
     }
-    
+
     public void InitContent() {
-      
+
         ShowJPanel(new Principal());
 
     }
-    
+
     public static void ShowJPanel(JPanel p) {
         p.setSize(750, 430);
-        p.setLocation(0,0);
-        
+        p.setLocation(0, 0);
+
         content.removeAll();
         content.add(p, BorderLayout.CENTER);
         content.revalidate();
         content.repaint();
     }
-    public void setDato(String dato){
-    this.dato = dato;
-    lbl_user.setText(dato);
+
+    public void setDato(String dato) {
+        this.dato = dato;
+        lbl_user.setText(dato);
     }
 
     /**
@@ -91,11 +93,12 @@ public class DashboardAdmin extends javax.swing.JFrame {
         btn_prin = new javax.swing.JButton();
         btn_lends = new javax.swing.JButton();
         btn_returns = new javax.swing.JButton();
-        btn_adminusers = new javax.swing.JButton();
+        btn_exit = new javax.swing.JButton();
         btn_books = new javax.swing.JButton();
         btn_reports = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         btn_users = new javax.swing.JButton();
+        btn_adminusers = new javax.swing.JButton();
         header = new javax.swing.JPanel();
         navText = new javax.swing.JLabel();
         dateText = new javax.swing.JLabel();
@@ -174,23 +177,22 @@ public class DashboardAdmin extends javax.swing.JFrame {
         });
         menu.add(btn_returns, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 270, 52));
 
-        btn_adminusers.setBackground(new java.awt.Color(204, 153, 0));
-        btn_adminusers.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_adminusers.setForeground(new java.awt.Color(255, 255, 255));
-        btn_adminusers.setIcon(new javax.swing.ImageIcon(getClass().getResource("/account-multiple.png"))); // NOI18N
-        btn_adminusers.setText("Admin Control");
-        btn_adminusers.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 13, 1, 1, new java.awt.Color(0, 0, 0)));
-        btn_adminusers.setBorderPainted(false);
-        btn_adminusers.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btn_adminusers.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btn_adminusers.setIconTextGap(13);
-        btn_adminusers.setInheritsPopupMenu(true);
-        btn_adminusers.addActionListener(new java.awt.event.ActionListener() {
+        btn_exit.setBackground(new java.awt.Color(204, 153, 0));
+        btn_exit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_exit.setForeground(new java.awt.Color(255, 255, 255));
+        btn_exit.setText("Cerrar Sesion");
+        btn_exit.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 13, 1, 1, new java.awt.Color(0, 0, 0)));
+        btn_exit.setBorderPainted(false);
+        btn_exit.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btn_exit.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_exit.setIconTextGap(13);
+        btn_exit.setInheritsPopupMenu(true);
+        btn_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_adminusersActionPerformed(evt);
+                btn_exitActionPerformed(evt);
             }
         });
-        menu.add(btn_adminusers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 270, 52));
+        menu.add(btn_exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 270, 52));
 
         btn_books.setBackground(new java.awt.Color(204, 153, 0));
         btn_books.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -262,6 +264,24 @@ public class DashboardAdmin extends javax.swing.JFrame {
             }
         });
         menu.add(btn_users, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 270, 52));
+
+        btn_adminusers.setBackground(new java.awt.Color(204, 153, 0));
+        btn_adminusers.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_adminusers.setForeground(new java.awt.Color(255, 255, 255));
+        btn_adminusers.setIcon(new javax.swing.ImageIcon(getClass().getResource("/account-multiple.png"))); // NOI18N
+        btn_adminusers.setText("Admin Control");
+        btn_adminusers.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 13, 1, 1, new java.awt.Color(0, 0, 0)));
+        btn_adminusers.setBorderPainted(false);
+        btn_adminusers.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btn_adminusers.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_adminusers.setIconTextGap(13);
+        btn_adminusers.setInheritsPopupMenu(true);
+        btn_adminusers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_adminusersActionPerformed(evt);
+            }
+        });
+        menu.add(btn_adminusers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 270, 52));
 
         header.setBackground(new java.awt.Color(204, 153, 0));
         header.setPreferredSize(new java.awt.Dimension(744, 150));
@@ -350,9 +370,12 @@ public class DashboardAdmin extends javax.swing.JFrame {
         ShowJPanel(new Returns());
     }//GEN-LAST:event_btn_returnsActionPerformed
 
-    private void btn_adminusersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adminusersActionPerformed
-       ShowJPanel(new UpEmple());
-    }//GEN-LAST:event_btn_adminusersActionPerformed
+    private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed
+        dispose();
+        UserLogin loginviews = new UserLogin();
+        loginviews.setVisible(true);
+        JOptionPane.showMessageDialog(null, "Sesion Cerrada");
+    }//GEN-LAST:event_btn_exitActionPerformed
 
     private void btn_booksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_booksActionPerformed
         ShowJPanel(new Books());
@@ -370,16 +393,20 @@ public class DashboardAdmin extends javax.swing.JFrame {
         ShowJPanel(new Users());
     }//GEN-LAST:event_btn_usersActionPerformed
 
+    private void btn_adminusersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adminusersActionPerformed
+        ShowJPanel(new UpEmple());
+    }//GEN-LAST:event_btn_adminusersActionPerformed
+
     /**
      * @param args the command line arguments
      */
- 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel appName;
     private javax.swing.JPanel background;
     private javax.swing.JButton btn_adminusers;
     private javax.swing.JButton btn_books;
+    private javax.swing.JButton btn_exit;
     private javax.swing.JButton btn_lends;
     private javax.swing.JButton btn_prin;
     private javax.swing.JButton btn_reports;

@@ -8,6 +8,6 @@ public interface DAOEmplo {
     public void modificar(Empleados empleado) throws Exception;
     //public void sancionar(Empleados empleado) throws Exception;
     public void eliminar(int empleadoId) throws Exception;
-    public List<Empleados> listar(String fname) throws Exception;
-    public Empleados getUserById(int empleadoId) throws Exception;
+    public List<Empleados> listar(String name) throws Exception;
+    public Empleados getEmpleadoById(int empleadoId) throws Exception;
 }

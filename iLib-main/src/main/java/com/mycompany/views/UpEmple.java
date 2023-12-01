@@ -11,7 +11,7 @@ public class UpEmple extends javax.swing.JPanel {
     public UpEmple() {
         initComponents();
         InitStyles();
-        LoadUsers();
+        LoadEmpleados();
     }
 
     private void InitStyles() {
@@ -20,11 +20,11 @@ public class UpEmple extends javax.swing.JPanel {
         userSearch.putClientProperty("JTextField.placeholderText", "Ingrese el nombre de usuario a buscar.");
     }
 
-    private void LoadUsers() {
+    private void LoadEmpleados() {
         try {
             DAOEmplo dao = new DAOEmpleadosImpl();
             DefaultTableModel model = (DefaultTableModel) jtb_emple.getModel();
-            dao.listar("").forEach((u) -> model.addRow(new Object[]{u.getID(), u.getLNAME(), u.getFNAME(), u.getMNAME(), u.getBIRTH_DATE(), u.getUSER_ROLE(), u.getUSER_NAME(), u.getUSER_PASSWORD()}));
+            dao.listar("").forEach((e) -> model.addRow(new Object[]{e.getID(), e.getFNAME(), e.getLNAME(), e.getMNAME(), e.getBIRTH_DATE(), e.getUSER_ROLE() , e.getUSER_NAME(), e.getUSER_PASSWORD()}));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -207,45 +207,45 @@ public class UpEmple extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_nuevoActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        DAOEmplo dao = new DAOEmpleadosImpl();
-        DefaultTableModel model = (DefaultTableModel) jtb_emple.getModel();
-        if (jtb_emple.getSelectedRows().length < 1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Debes seleccionar uno o mas usuarios a eliminar.\n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
-        } else {
-            for (int i : jtb_emple.getSelectedRows()) {
-                try {
-                    dao.eliminar((int) jtb_emple.getValueAt(i, 0));
-                    model.removeRow(i);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
+         DAOEmplo dao = new DAOEmpleadosImpl();
+    DefaultTableModel model = (DefaultTableModel) jtb_emple.getModel();
+    if (jtb_emple.getSelectedRows().length < 1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Debes seleccionar uno o más empleados a eliminar.\n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+    } else {
+        for (int i : jtb_emple.getSelectedRows()) {
+            try {
+                dao.eliminar((int) jtb_emple.getValueAt(i, 0));
+                model.removeRow(i);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
+    }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void btn_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editActionPerformed
         if (jtb_emple.getSelectedRow() > -1) {
-            try {
-                int empleadoId = (int) jtb_emple.getValueAt(jtb_emple.getSelectedRow(), 0);
-                DAOEmplo dao = new DAOEmpleadosImpl();
-                DashboardAdmin.ShowJPanel(new RegisterEmple(dao.getUserById(empleadoId)));
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Debes seleccionar el usuario a editar.\n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btn_editActionPerformed
-
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         try {
-             DAOEmplo dao = new DAOEmpleadosImpl();
-            DefaultTableModel model = (DefaultTableModel) jtb_emple.getModel();
-            model.setRowCount(0);
-            dao.listar(userSearch.getText()).forEach((u) -> model.addRow(new Object[]{u.getID(), u.getLNAME(), u.getFNAME(), u.getMNAME(), u.getBIRTH_DATE(), u.getUSER_ROLE(), u.getUSER_NAME(), u.getUSER_PASSWORD()}));
+            int empleadoId = (int) jtb_emple.getValueAt(jtb_emple.getSelectedRow(), 0);
+            DAOEmplo dao = new DAOEmpleadosImpl();
+            Dashboard.ShowJPanel(new RegisterEmple(dao.getEmpleadoById(empleadoId)));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Debes seleccionar el empleado a editar.\n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_btn_editActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+       try {
+        DAOEmplo dao = new DAOEmpleadosImpl();
+        DefaultTableModel model = (DefaultTableModel) jtb_emple.getModel();
+        model.setRowCount(0);
+        dao.listar(userSearch.getText()).forEach((e) -> model.addRow(new Object[]{e.getID(), e.getFNAME(), e.getLNAME(), e.getMNAME(), e.getBIRTH_DATE(), e.getUSER_ROLE(), e.getUSER_NAME(), e.getUSER_PASSWORD()}));
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void userSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSearchActionPerformed
