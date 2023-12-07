@@ -44,7 +44,7 @@ CREATE TABLE users (
   sanc_money NUMBER DEFAULT 0 NOT NULL
 );
 
--- Crear las restricciones de clave forï¿½nea
+-- Crear las restricciones de clave forÃ¯Â¿Â½nea
 ALTER TABLE lendings_table ADD CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id);
 ALTER TABLE lendings_table ADD CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books(id);
 
@@ -90,11 +90,11 @@ SELECT * FROM USERLogin;
 SELECT * FROM Books;
 SELECT * FROM lendings_table;
 
---Creacion del usuario C##admin contraseña: 123
+--Creacion del usuario C##admin contraseÃ±a: 123
   
 /*
     sqlplus /nolog
-    conn system/su_contraseña
+    conn system/su_contraseÃ±a
     
   CREATE USER C##biblio IDENTIFIED BY 123;
   GRANT DBA TO C##admin;
@@ -221,6 +221,137 @@ END;
 --Triggers---------------------------------------------------------------
 
 
+CREATE OR REPLACE TRIGGER tr_books
+BEFORE INSERT OR UPDATE OR DELETE ON books
+FOR EACH ROW
+DECLARE
+    v_category_valid BOOLEAN;
+BEGIN
+    IF INSERTING OR UPDATING THEN
+        
+        v_category_valid := :NEW.category IN ('Ficción', 'No Ficción', 'Ciencia', 'Historia', 'Otro');
+        IF NOT v_category_valid THEN
+            RAISE_APPLICATION_ERROR(-20001, 'La categoría no es válida.');
+        END IF;
+        
+       
+        IF TO_NUMBER(:NEW.stock) IS NULL OR TO_NUMBER(:NEW.ejemplares) IS NULL THEN
+            RAISE_APPLICATION_ERROR(-20002, 'El stock y los ejemplares deben ser números válidos.');
+        END IF;
+    END IF;
+    
+   
+END;
+/
+
+
+------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER tr_lendings
+BEFORE INSERT OR UPDATE OR DELETE ON lendings_table
+FOR EACH ROW
+DECLARE
+    v_user_exists NUMBER;
+    v_book_exists NUMBER;
+BEGIN
+    IF INSERTING OR UPDATING THEN
+     
+        SELECT COUNT(*) INTO v_user_exists FROM users WHERE id = :NEW.user_id;
+        IF v_user_exists = 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'El ID de usuario no existe en la tabla users.');
+        END IF;
+        
+
+        SELECT COUNT(*) INTO v_book_exists FROM books WHERE id = :NEW.book_id;
+        IF v_book_exists = 0 THEN
+            RAISE_APPLICATION_ERROR(-20002, 'El ID de libro no existe en la tabla books.');
+        END IF;
+
+
+        IF :NEW.date_return IS NOT NULL AND TO_DATE(:NEW.date_return, 'DD-MM-YYYY') <= TO_DATE(:NEW.date_out, 'DD-MM-YYYY') THEN
+            RAISE_APPLICATION_ERROR(-20003, 'La fecha de devolución debe ser posterior a la fecha de salida.');
+        END IF;
+    END IF;
+    
+ 
+END;
+/
+
+
+
+
+-------------------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER tr_users
+BEFORE INSERT OR UPDATE OR DELETE ON users
+FOR EACH ROW
+DECLARE
+    v_sanc_money_limit NUMBER := 100; 
+BEGIN
+    IF INSERTING OR UPDATING THEN
+
+        IF LENGTH(TRIM(:NEW.name)) = 0 OR LENGTH(TRIM(:NEW.last_name_p)) = 0 OR LENGTH(TRIM(:NEW.last_name_m)) = 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Nombre y apellidos no pueden estar vacíos.');
+        END IF;
+        
+        IF :NEW.sanctions < 0 THEN
+            RAISE_APPLICATION_ERROR(-20002, 'El número de sanciones no puede ser negativo.');
+        END IF;
+        
+        IF :NEW.sanc_money < 0 THEN
+            RAISE_APPLICATION_ERROR(-20003, 'El monto de dinero sancionado no puede ser negativo.');
+        END IF;
+
+
+        IF :NEW.sanc_money > v_sanc_money_limit THEN
+            :NEW.sanc_money := v_sanc_money_limit; -- Limitar a la sanción máxima permitida
+            RAISE_APPLICATION_ERROR(-20004, 'Se ha alcanzado el límite de sanción monetaria.');
+        END IF;
+    END IF;
+    
+END;
+/
+
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER tr_multas
+BEFORE INSERT OR UPDATE OR DELETE ON multas
+FOR EACH ROW
+BEGIN
+    -- Validación de la fecha de vencimiento en el formato DD-MM-YYYY
+    IF TO_DATE(:NEW.fecha_vencimiento, 'DD-MM-YYYY') <= SYSDATE THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La fecha de vencimiento debe ser posterior a la fecha actual.');
+    END IF;
+
+    IF :NEW.estado_multa NOT IN ('PENDIENTE', 'PAGADA', 'MOROSO') THEN
+        RAISE_APPLICATION_ERROR(-20002, 'El estado de la multa no es válido.');
+    END IF;
+
+    -- Validación del monto no negativo
+    IF :NEW.monto < 0 THEN
+        RAISE_APPLICATION_ERROR(-20003, 'El monto de la multa no puede ser negativo.');
+    END IF;
+
+END;
+/
+
+
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER tr_editorial
+BEFORE INSERT OR UPDATE OR DELETE ON editorial
+FOR EACH ROW
+BEGIN
+    -- Validación del nombre de la editorial no nulo
+    IF INSERTING OR UPDATING THEN
+        IF :NEW.Nombre_editorial IS NULL THEN
+            RAISE_APPLICATION_ERROR(-20001, 'El nombre de la editorial no puede ser nulo.');
+        END IF;
+    END IF;
+
+END;
+/
+
+
 
 --Vistas--------------------------------------------------------------------------------
 
@@ -268,12 +399,12 @@ EXEC usuarios_sin_deudas;
 
 
 
---2 SP:procedimiento almacenado que reciba como parámetro el titulo de un libro y despliegue las copias que están disponibles (no prestadas).
+--2 SP:procedimiento almacenado que reciba como parÃ¡metro el titulo de un libro y despliegue las copias que estÃ¡n disponibles (no prestadas).
 CREATE OR REPLACE PROCEDURE copias_disponibles(p_titulo IN VARCHAR2) AS
   v_libro_id NUMBER;
   v_disponibles NUMBER;
 BEGIN
-  -- Obtener el ID del libro basado en el título proporcionado
+  -- Obtener el ID del libro basado en el tÃ­tulo proporcionado
   SELECT id INTO v_libro_id
   FROM books
   WHERE title = p_titulo;
@@ -289,13 +420,13 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Libro: ' || p_titulo || ', Copias Disponibles: ' || v_disponibles);
   ELSE
     -- Si el libro no existe
-    DBMS_OUTPUT.PUT_LINE('El libro con el título ' || p_titulo || ' no existe.');
+    DBMS_OUTPUT.PUT_LINE('El libro con el tÃ­tulo ' || p_titulo || ' no existe.');
   END IF;
 END;
 --ejecucion
-EXEC copias_disponibles('Título del Libro');-- aqui se pone el titulo que hay en la BD
+EXEC copias_disponibles('TÃ­tulo del Libro');-- aqui se pone el titulo que hay en la BD
 
---3 SP: Procedimiento Almacenado que ingrese como parametros el nombre y apellido de un usuario y despliegue los títulos y copias que mantiene en préstamo
+--3 SP: Procedimiento Almacenado que ingrese como parametros el nombre y apellido de un usuario y despliegue los tÃ­tulos y copias que mantiene en prÃ©stamo
 
 CREATE OR REPLACE PROCEDURE libros_en_prestamo(p_nombre IN VARCHAR2, p_apellido IN VARCHAR2) AS
 BEGIN
@@ -305,18 +436,18 @@ BEGIN
                    JOIN books b ON lt.book_id = b.id
                    WHERE u.name = p_nombre AND u.last_name_p = p_apellido) 
   LOOP
-    DBMS_OUTPUT.PUT_LINE('Usuario: ' || p_nombre || ' ' || p_apellido || ', Título: ' || prestamo.title || ', Fecha de Préstamo: ' || prestamo.date_out);
+    DBMS_OUTPUT.PUT_LINE('Usuario: ' || p_nombre || ' ' || p_apellido || ', TÃ­tulo: ' || prestamo.title || ', Fecha de PrÃ©stamo: ' || prestamo.date_out);
   END LOOP;
 END;
 
 --Ejecucion 
 EXEC libros_en_prestamo('NombreUsuario', 'ApellidoUsuario');--Aqui se coloca el nombre del usuario y apellidos ya registrada en la BD osea registrado previamente, con registros ya hechos
 
---4 SP:  procedimiento almacenado que despliegue el título del libro más prestado.
+--4 SP:  procedimiento almacenado que despliegue el tÃ­tulo del libro mÃ¡s prestado.
 CREATE OR REPLACE PROCEDURE libro_mas_prestado AS
   v_titulo VARCHAR2(255);
 BEGIN
-  -- Obtener el título del libro más prestado
+  -- Obtener el tÃ­tulo del libro mÃ¡s prestado
   SELECT b.title
   INTO v_titulo
   FROM books b
@@ -326,18 +457,18 @@ BEGIN
   FETCH FIRST 1 ROW ONLY;
 
   -- Mostrar el resultado
-  DBMS_OUTPUT.PUT_LINE('El libro más prestado es: ' || v_titulo);
+  DBMS_OUTPUT.PUT_LINE('El libro mÃ¡s prestado es: ' || v_titulo);
 END;
 --ejecucion
 EXEC libro_mas_prestado;
 
--- 5 SP: Procedimiento Almacenado que ingrese como parámetro el nombre de un autor y que devuelva como parámetro de salida el número de libros que ha escrito
+-- 5 SP: Procedimiento Almacenado que ingrese como parÃ¡metro el nombre de un autor y que devuelva como parÃ¡metro de salida el nÃºmero de libros que ha escrito
 CREATE OR REPLACE PROCEDURE libros_por_autor(
   p_nombre_autor IN VARCHAR2,
   p_num_libros OUT NUMBER
 ) AS
 BEGIN
-  -- Obtener el número de libros escritos por el autor
+  -- Obtener el nÃºmero de libros escritos por el autor
   SELECT COUNT(distinct la.ID_libro)
   INTO p_num_libros
   FROM autores_libros la
@@ -352,7 +483,7 @@ BEGIN
   DBMS_OUTPUT.PUT_LINE('El autor ha escrito ' || v_num_libros || ' libros.');
 END;
 
---6 SP:  Procedimiento Almacenado que reciba el nombre de un género como parámetro y devuelva los títulos de los libros pertenecientes a ese género.
+--6 SP:  Procedimiento Almacenado que reciba el nombre de un gÃ©nero como parÃ¡metro y devuelva los tÃ­tulos de los libros pertenecientes a ese gÃ©nero.
 CREATE OR REPLACE PROCEDURE libros_por_genero(p_nombre_genero IN VARCHAR2) AS
 BEGIN
   FOR libro IN (SELECT b.title
@@ -361,7 +492,7 @@ BEGIN
                 JOIN generos g ON lg.id_genero = g.id_genero
                 WHERE g.Nombre_Genero = p_nombre_genero)
   LOOP
-    DBMS_OUTPUT.PUT_LINE('Título: ' || libro.title);
+    DBMS_OUTPUT.PUT_LINE('TÃ­tulo: ' || libro.title);
   END LOOP;
 END;
 
@@ -371,7 +502,7 @@ BEGIN
 END;
 
 
---7 SP: Procedimiento Almacenado que muestre los préstamos que están vencidos, incluyendo detalles sobre los usuarios y los libros involucrados
+--7 SP: Procedimiento Almacenado que muestre los prÃ©stamos que estÃ¡n vencidos, incluyendo detalles sobre los usuarios y los libros involucrados
 
 CREATE OR REPLACE PROCEDURE prestamos_vencidos AS
 BEGIN
@@ -382,15 +513,15 @@ BEGIN
                    JOIN books b ON lt.book_id = b.id
                    WHERE lt.date_return < SYSDATE)
   LOOP
-    DBMS_OUTPUT.PUT_LINE('Préstamo ID: ' || prestamo.id ||
+    DBMS_OUTPUT.PUT_LINE('PrÃ©stamo ID: ' || prestamo.id ||
                          ', Usuario: ' || prestamo.nombre_usuario ||
                          ', Libro: ' || prestamo.titulo_libro ||
-                         ', Fecha de Préstamo: ' || prestamo.date_out ||
-                         ', Fecha de Devolución Vencida: ' || prestamo.date_return);
+                         ', Fecha de PrÃ©stamo: ' || prestamo.date_out ||
+                         ', Fecha de DevoluciÃ³n Vencida: ' || prestamo.date_return);
   END LOOP;
 EXCEPTION
   WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('No hay préstamos vencidos.');
+    DBMS_OUTPUT.PUT_LINE('No hay prÃ©stamos vencidos.');
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Error en el procedimiento: ' || SQLERRM);
 END;
@@ -400,7 +531,7 @@ BEGIN
   prestamos_vencidos;
 END;
 
---8 SP: Procedimiento Almacenado que muestre información detallada sobre un libro específico, incluyendo datos sobre autores, géneros y editorial
+--8 SP: Procedimiento Almacenado que muestre informaciÃ³n detallada sobre un libro especÃ­fico, incluyendo datos sobre autores, gÃ©neros y editorial
 
 CREATE OR REPLACE PROCEDURE info_libro_detallada(p_id_libro IN NUMBER) AS
 BEGIN
@@ -415,16 +546,16 @@ BEGIN
                      JOIN editorial e ON el.ID_editorial = e.ID_editorial
                      WHERE b.id = p_id_libro)
   LOOP
-    DBMS_OUTPUT.PUT_LINE('Información detallada del libro:');
-    DBMS_OUTPUT.PUT_LINE('Título: ' || info_libro.titulo_libro);
-    DBMS_OUTPUT.PUT_LINE('Fecha de Publicación: ' || info_libro.publication_date);
+    DBMS_OUTPUT.PUT_LINE('InformaciÃ³n detallada del libro:');
+    DBMS_OUTPUT.PUT_LINE('TÃ­tulo: ' || info_libro.titulo_libro);
+    DBMS_OUTPUT.PUT_LINE('Fecha de PublicaciÃ³n: ' || info_libro.publication_date);
     DBMS_OUTPUT.PUT_LINE('Autor: ' || info_libro.autor);
-    DBMS_OUTPUT.PUT_LINE('Género: ' || info_libro.genero);
+    DBMS_OUTPUT.PUT_LINE('GÃ©nero: ' || info_libro.genero);
     DBMS_OUTPUT.PUT_LINE('Editorial: ' || info_libro.nombre_editorial);
   END LOOP;
 EXCEPTION
   WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('No se encontró información para el libro con ID ' || p_id_libro);
+    DBMS_OUTPUT.PUT_LINE('No se encontrÃ³ informaciÃ³n para el libro con ID ' || p_id_libro);
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Error en el procedimiento: ' || SQLERRM);
 END;
@@ -453,7 +584,7 @@ BEGIN
   END LOOP;
 EXCEPTION
   WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('No hay información disponible sobre usuarios con multas acumuladas.');
+    DBMS_OUTPUT.PUT_LINE('No hay informaciÃ³n disponible sobre usuarios con multas acumuladas.');
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Error en el procedimiento: ' || SQLERRM);
 END;
@@ -462,7 +593,7 @@ BEGIN
   usuarios_con_mas_multas;
 END;
 
---10. SP: Procedimiento Almacenado que muestre los libros más recientemente añadidos a la biblioteca
+--10. SP: Procedimiento Almacenado que muestre los libros mÃ¡s recientemente aÃ±adidos a la biblioteca
 
 CREATE OR REPLACE PROCEDURE libros_recientes AS
 BEGIN
@@ -473,21 +604,21 @@ BEGIN
   )
   LOOP
     DBMS_OUTPUT.PUT_LINE('ID del Libro: ' || libro_reciente.id ||
-                         ', Título: ' || libro_reciente.titulo_libro ||
-                         ', Fecha de Publicación: ' || libro_reciente.publication_date ||
+                         ', TÃ­tulo: ' || libro_reciente.titulo_libro ||
+                         ', Fecha de PublicaciÃ³n: ' || libro_reciente.publication_date ||
                          ', Autor: ' || libro_reciente.author ||
-                         ', Categoría: ' || libro_reciente.category ||
+                         ', CategorÃ­a: ' || libro_reciente.category ||
                          ', Editorial: ' || libro_reciente.editorial ||
                          ', Idioma: ' || libro_reciente.lang ||
-                         ', Páginas: ' || libro_reciente.pages ||
-                         ', Descripción: ' || libro_reciente.description ||
+                         ', PÃ¡ginas: ' || libro_reciente.pages ||
+                         ', DescripciÃ³n: ' || libro_reciente.description ||
                          ', Ejemplares: ' || libro_reciente.ejemplares ||
                          ', Stock: ' || libro_reciente.stock ||
                          ', Disponibles: ' || libro_reciente.available);
   END LOOP;
 EXCEPTION
   WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('No hay información disponible sobre libros recientes.');
+    DBMS_OUTPUT.PUT_LINE('No hay informaciÃ³n disponible sobre libros recientes.');
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Error en el procedimiento: ' || SQLERRM);
 END;
@@ -497,7 +628,7 @@ BEGIN
   libros_recientes;
 END;
 
---11. SP: Procedimiento Almacenado que reciba el nombre de un género como parámetro y devuelva los títulos de los libros pertenecientes a ese género
+--11. SP: Procedimiento Almacenado que reciba el nombre de un gÃ©nero como parÃ¡metro y devuelva los tÃ­tulos de los libros pertenecientes a ese gÃ©nero
 
 CREATE OR REPLACE PROCEDURE libros_por_genero(p_nombre_genero IN VARCHAR2) AS
 BEGIN
@@ -509,11 +640,11 @@ BEGIN
     WHERE g.Nombre_Genero = p_nombre_genero
   )
   LOOP
-    DBMS_OUTPUT.PUT_LINE('Título del Libro: ' || libro_genero.titulo_libro);
+    DBMS_OUTPUT.PUT_LINE('TÃ­tulo del Libro: ' || libro_genero.titulo_libro);
   END LOOP;
 EXCEPTION
   WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('No hay información disponible para el género ' || p_nombre_genero);
+    DBMS_OUTPUT.PUT_LINE('No hay informaciÃ³n disponible para el gÃ©nero ' || p_nombre_genero);
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Error en el procedimiento: ' || SQLERRM);
 END;
@@ -522,7 +653,7 @@ BEGIN
   libros_por_genero('NOMBRE_DEL_GENERO');
 END;
 
---12: SP: Procedimiento Almacenado que muestre los libros que actualmente no están disponibles para préstamo
+--12: SP: Procedimiento Almacenado que muestre los libros que actualmente no estÃ¡n disponibles para prÃ©stamo
 
 CREATE OR REPLACE PROCEDURE libros_no_disponibles AS
 BEGIN
@@ -533,13 +664,13 @@ BEGIN
   )
   LOOP
     DBMS_OUTPUT.PUT_LINE('ID del Libro: ' || libro_no_disponible.id ||
-                         ', Título: ' || libro_no_disponible.titulo_libro ||
+                         ', TÃ­tulo: ' || libro_no_disponible.titulo_libro ||
                          ', Autor: ' || libro_no_disponible.author ||
                          ', Editorial: ' || libro_no_disponible.editorial);
   END LOOP;
 EXCEPTION
   WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('Todos los libros están disponibles para préstamo.');
+    DBMS_OUTPUT.PUT_LINE('Todos los libros estÃ¡n disponibles para prÃ©stamo.');
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Error en el procedimiento: ' || SQLERRM);
 END;
@@ -555,7 +686,7 @@ DECLARE
         SELECT * FROM books;
 BEGIN
     FOR book_rec IN c_books LOOP
-        -- L�gica para cada registro de libro
+        -- Lógica para cada registro de libro
         DBMS_OUTPUT.PUT_LINE('Book Title: ' || book_rec.title);
     END LOOP;
 END;
@@ -567,7 +698,7 @@ DECLARE
         SELECT * FROM books WHERE author = v_author_name;
 BEGIN
     FOR book_rec IN c_books_by_author LOOP
-        -- L�gica para cada libro del autor espec�fico
+        -- Lógica para cada libro del autor específico
         DBMS_OUTPUT.PUT_LINE('Book Title: ' || book_rec.title);
     END LOOP;
 END;
@@ -578,7 +709,7 @@ DECLARE
         SELECT * FROM lendings_table;
 BEGIN
     FOR lending_rec IN c_lendings LOOP
-        -- L�gica para cada registro de pr�stamo
+        -- Lógica para cada registro de préstamo
         DBMS_OUTPUT.PUT_LINE('Book ID: ' || lending_rec.book_id || ', User ID: ' || lending_rec.user_id);
     END LOOP;
 END;
@@ -589,7 +720,7 @@ DECLARE
         SELECT * FROM users WHERE sanctions > 0;
 BEGIN
     FOR user_rec IN c_users_with_penalties LOOP
-        -- L�gica para cada usuario con multa
+        -- Lógica para cada usuario con multa
         DBMS_OUTPUT.PUT_LINE('User ID: ' || user_rec.id || ', Name: ' || user_rec.name);
     END LOOP;
 END;
@@ -605,18 +736,18 @@ BEGIN
     FETCH c_available_books INTO v_available_books;
     CLOSE c_available_books;
 
-    -- L�gica para utilizar v_available_books
+    -- Lógica para utilizar v_available_books
     DBMS_OUTPUT.PUT_LINE('Available Books: ' || v_available_books);
 END;
 --------------------------------------------------------------------------------
 --6--
 DECLARE
-    v_lending_id NUMBER := 1; -- ID del pr�stamo deseado
+    v_lending_id NUMBER := 1; -- ID del préstamo deseado
     CURSOR c_lending_details IS
         SELECT * FROM lendings_table WHERE id = v_lending_id;
 BEGIN
     FOR lending_rec IN c_lending_details LOOP
-        -- L�gica para cada detalle del pr�stamo
+        -- Lógica para cada detalle del préstamo
         DBMS_OUTPUT.PUT_LINE('Lending ID: ' || lending_rec.id || ', Book ID: ' || lending_rec.book_id || ', User ID: ' || lending_rec.user_id);
     END LOOP;
 END;
@@ -627,7 +758,7 @@ DECLARE
         SELECT DISTINCT category FROM books;
 BEGIN
     FOR genre_rec IN c_book_genres LOOP
-        -- L�gica para cada g�nero
+        -- Lógica para cada género
         DBMS_OUTPUT.PUT_LINE('Book Genre: ' || genre_rec.category);
     END LOOP;
 END;
@@ -638,7 +769,7 @@ DECLARE
         SELECT * FROM autores;
 BEGIN
     FOR author_rec IN c_authors_with_info LOOP
-        -- L�gica para cada autor con informaci�n adicional
+        -- Lógica para cada autor con información adicional
         DBMS_OUTPUT.PUT_LINE('Author ID: ' || author_rec.ID_autor || ', Name: ' || author_rec.Nombre_Autor || ', Nationality: ' || author_rec.Nacionalidad);
     END LOOP;
 END;
@@ -650,10 +781,10 @@ DECLARE
         FROM books
         WHERE id IN (SELECT book_id FROM lendings_table WHERE date_return IS NULL);
 BEGIN
-    -- L�gica de uso del cursor (puede ser un bucle FOR, etc.)
+    -- Lógica de uso del cursor (puede ser un bucle FOR, etc.)
     FOR libro IN libros_prestamo_cursor LOOP
         -- Acciones a realizar con cada fila del cursor
-        DBMS_OUTPUT.PUT_LINE('Libro en pr�stamo: ' || libro.title || ', Autor: ' || libro.author);
+        DBMS_OUTPUT.PUT_LINE('Libro en préstamo: ' || libro.title || ', Autor: ' || libro.author);
     END LOOP;
 END;
 --------------------------------------------------------------------------------
@@ -671,7 +802,7 @@ END;
 --------------------------------------------------------------------------------
 --11--
 DECLARE
-    v_user_id NUMBER := 1; -- ID del usuario espec�fico
+    v_user_id NUMBER := 1; -- ID del usuario específico
     CURSOR prestamos_usuario_cursor IS
         SELECT lt.id, lt.date_out, lt.date_return, b.title
         FROM lendings_table lt
@@ -679,8 +810,8 @@ DECLARE
         WHERE lt.user_id = v_user_id;
 BEGIN
     FOR prestamo IN prestamos_usuario_cursor LOOP
-        DBMS_OUTPUT.PUT_LINE('Pr�stamo ID: ' || prestamo.id || ', Libro: ' || prestamo.title ||
-                             ', Fecha de pr�stamo: ' || prestamo.date_out);
+        DBMS_OUTPUT.PUT_LINE('Préstamo ID: ' || prestamo.id || ', Libro: ' || prestamo.title ||
+                             ', Fecha de préstamo: ' || prestamo.date_out);
     END LOOP;
 END;
 --------------------------------------------------------------------------------
@@ -694,20 +825,20 @@ DECLARE
         HAVING COUNT(la.id_libros) > 5;
 BEGIN
     FOR autor IN autores_mas_cinco_libros_cursor LOOP
-        DBMS_OUTPUT.PUT_LINE('Autor con m�s de 5 libros: ' || autor.Nombre_Autor || ', Total de libros: ' || autor.total_libros);
+        DBMS_OUTPUT.PUT_LINE('Autor con más de 5 libros: ' || autor.Nombre_Autor || ', Total de libros: ' || autor.total_libros);
     END LOOP;
 END;
 --------------------------------------------------------------------------------
 --13--
 DECLARE
-    v_categoria VARCHAR2(50) := 'Novela'; -- Categor�a espec�fica
+    v_categoria VARCHAR2(50) := 'Novela'; -- Categoría específica
     CURSOR libros_categoria_cursor IS
         SELECT id, title, author
         FROM books
         WHERE category = v_categoria;
 BEGIN
     FOR libro_categoria IN libros_categoria_cursor LOOP
-        DBMS_OUTPUT.PUT_LINE('Libro en la categor�a ' || v_categoria || ': ' || libro_categoria.title || ', Autor: ' || libro_categoria.author);
+        DBMS_OUTPUT.PUT_LINE('Libro en la categoría ' || v_categoria || ': ' || libro_categoria.title || ', Autor: ' || libro_categoria.author);
     END LOOP;
 END;
 --------------------------------------------------------------------------------
@@ -718,7 +849,7 @@ DECLARE
         FROM libros_generos lg;
 BEGIN
     FOR genero_libro IN generos_libros_cursor LOOP
-        DBMS_OUTPUT.PUT_LINE('G�nero de libro disponible: ' || genero_libro.Nombre_Genero);
+        DBMS_OUTPUT.PUT_LINE('Género de libro disponible: ' || genero_libro.Nombre_Genero);
     END LOOP;
 END;
 --------------------------------------------------------------------------------
@@ -730,7 +861,7 @@ DECLARE
         WHERE sanc_money > 0;
 BEGIN
     FOR usuario_sancionado IN usuarios_con_sanciones_cursor LOOP
-        DBMS_OUTPUT.PUT_LINE('Usuario con sanci�n monetaria: ' || usuario_sancionado.name ||
+        DBMS_OUTPUT.PUT_LINE('Usuario con sanción monetaria: ' || usuario_sancionado.name ||
                              ' ' || usuario_sancionado.last_name_p || ', Monto: ' || usuario_sancionado.sanc_money);
     END LOOP;
 END;
@@ -787,7 +918,7 @@ RETURN NUMBER
 IS
     total_libros NUMBER := 0;
 BEGIN
-    -- Obtener el n�mero total de libros en un g�nero espec�fico
+    -- Obtener el número total de libros en un género específico
     SELECT COUNT(*)
     INTO total_libros
     FROM libros_generos lg
@@ -848,7 +979,7 @@ RETURN NUMBER
 IS
     total_prestamos_por_categoria NUMBER := 0;
 BEGIN
-    -- Obtener la cantidad de pr�stamos por categor�a de libros
+    -- Obtener la cantidad de préstamos por categoría de libros
     SELECT COUNT(*)
     INTO total_prestamos_por_categoria
     FROM lendings_table lt
@@ -864,7 +995,7 @@ RETURN NUMBER
 IS
     total_libros_por_autor NUMBER := 0;
 BEGIN
-    -- Obtener la cantidad de libros escritos por un autor espec�fico
+    -- Obtener la cantidad de libros escritos por un autor específico
     SELECT COUNT(*)
     INTO total_libros_por_autor
     FROM libros_autores la
@@ -880,7 +1011,7 @@ RETURN NUMBER
 IS
     total_prestamos_activos NUMBER := 0;
 BEGIN
-    -- Obtener la cantidad de pr�stamos activos de un usuario
+    -- Obtener la cantidad de préstamos activos de un usuario
     SELECT COUNT(*)
     INTO total_prestamos_activos
     FROM lendings_table
@@ -895,7 +1026,7 @@ RETURN NUMBER
 IS
     total_libros_por_genero_idioma NUMBER := 0;
 BEGIN
-    -- Obtener la cantidad total de libros por g�nero en un idioma espec�fico
+    -- Obtener la cantidad total de libros por género en un idioma específico
     SELECT COUNT(*)
     INTO total_libros_por_genero_idioma
     FROM libros_generos lg
@@ -926,7 +1057,7 @@ RETURN NUMBER
 IS
     total_libros_por_autor_idioma NUMBER := 0;
 BEGIN
-    -- Obtener la cantidad de libros de un autor en un idioma espec�fico
+    -- Obtener la cantidad de libros de un autor en un idioma específico
     SELECT COUNT(*)
     INTO total_libros_por_autor_idioma
     FROM libros_autores la
@@ -942,7 +1073,7 @@ RETURN NUMBER
 IS
     total_libros_por_categoria NUMBER := 0;
 BEGIN
-    -- Obtener la cantidad total de libros en una categor�a espec�fica
+    -- Obtener la cantidad total de libros en una categoría específica
     SELECT COUNT(*)
     INTO total_libros_por_categoria
     FROM books
@@ -957,7 +1088,7 @@ RETURN NUMBER
 IS
     total_libros_por_idioma_categoria NUMBER := 0;
 BEGIN
-    -- Obtener la cantidad total de libros por idioma y categor�a
+    -- Obtener la cantidad total de libros por idioma y categoría
     SELECT COUNT(*)
     INTO total_libros_por_idioma_categoria
     FROM books
