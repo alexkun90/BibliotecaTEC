@@ -1,0 +1,261 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="USER_MANAGEMENT_PACKAGE/report.js" type="text/javascript"></script>
+<link href="USER_MANAGEMENT_PACKAGE/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">USER_MANAGEMENT_PACKAGE</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P></P><HR><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#create_user">create_user</A></B>( username IN VARCHAR2 , password IN VARCHAR2 , email IN VARCHAR2 ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#create_user">create_user</A></B>( username IN VARCHAR2 , password IN VARCHAR2 , email IN VARCHAR2 ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Body--------------------------------------------------------------------------</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#delete_user">delete_user</A></B>( user_id IN NUMBER ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#delete_user">delete_user</A></B>( user_id IN NUMBER ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_user_info">get_user_info</A></B>( user_id IN NUMBER ) RETURN SYS_REFCURSOR ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_user_info">get_user_info</A></B>( user_id IN NUMBER ) RETURN SYS_REFCURSOR </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#update_user_email">update_user_email</A></B>( user_id IN NUMBER , new_email IN VARCHAR2 ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#update_user_email">update_user_email</A></B>( user_id IN NUMBER , new_email IN VARCHAR2 ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+</TABLE>
+<P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="create_user"></A>
+<H3>create_user</H3><PRE>          <B>create_user</B>( username IN VARCHAR2 , password IN VARCHAR2 , email IN VARCHAR2 ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="create_user"></A>
+<H3>create_user</H3><PRE>          <B>create_user</B>( username IN VARCHAR2 , password IN VARCHAR2 , email IN VARCHAR2 ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Body--------------------------------------------------------------------------<DD><DL></DL></DD></DL><HR><A NAME="delete_user"></A>
+<H3>delete_user</H3><PRE>          <B>delete_user</B>( user_id IN NUMBER ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="delete_user"></A>
+<H3>delete_user</H3><PRE>          <B>delete_user</B>( user_id IN NUMBER ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="get_user_info"></A>
+<H3>get_user_info</H3><PRE>          <B>get_user_info</B>( user_id IN NUMBER ) RETURN SYS_REFCURSOR ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="get_user_info"></A>
+<H3>get_user_info</H3><PRE>          <B>get_user_info</B>( user_id IN NUMBER ) RETURN SYS_REFCURSOR </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="update_user_email"></A>
+<H3>update_user_email</H3><PRE>          <B>update_user_email</B>( user_id IN NUMBER , new_email IN VARCHAR2 ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="update_user_email"></A>
+<H3>update_user_email</H3><PRE>          <B>update_user_email</B>( user_id IN NUMBER , new_email IN VARCHAR2 ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>C##ADMIN</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>USER_MANAGEMENT_PACKAGE</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>74932</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>07/12/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>07/12/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-12-07:20:03:06</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>INVALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+PACKAGE user_management_package AS
+  PROCEDURE create_user(username IN VARCHAR2, password IN VARCHAR2, email IN VARCHAR2);
+  PROCEDURE update_user_email(user_id IN NUMBER, new_email IN VARCHAR2);
+  PROCEDURE delete_user(user_id IN NUMBER);
+  FUNCTION get_user_info(user_id IN NUMBER) RETURN SYS_REFCURSOR;
+END user_management_package;
+--Body--------------------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY user_management_package AS
+  PROCEDURE create_user(username IN VARCHAR2, password IN VARCHAR2, email IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('User created successfully.');
+  END create_user;
+
+  PROCEDURE update_user_email(user_id IN NUMBER, new_email IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('User email updated successfully.');
+  END update_user_email;
+
+  PROCEDURE delete_user(user_id IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('User deleted successfully.');
+  END delete_user;
+
+  FUNCTION get_user_info(user_id IN NUMBER) RETURN SYS_REFCURSOR IS
+    user_info_cursor SYS_REFCURSOR;
+  BEGIN
+    OPEN user_info_cursor FOR
+      SELECT * FROM users WHERE user_id = user_id;
+    RETURN user_info_cursor;
+  END get_user_info;
+END user_management_package;</pre>
+</div>
+</div>
+</div>
+</body>
+</html>
