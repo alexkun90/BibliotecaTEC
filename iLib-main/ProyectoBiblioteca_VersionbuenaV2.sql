@@ -679,6 +679,344 @@ BEGIN
   libros_no_disponibles;
 END;
 
+--------------------------------------------------------------------------procedimientos almacenados Ale
+--13
+CREATE OR REPLACE PROCEDURE insert_book_and_multa (
+  p_title VARCHAR2,
+  p_publication_date VARCHAR2,
+  p_author VARCHAR2,
+  p_category VARCHAR2,
+  p_edit VARCHAR2,
+  p_lang VARCHAR2,
+  p_pages VARCHAR2,
+  p_description VARCHAR2,
+  p_ejemplares VARCHAR2,
+  p_stock NUMBER,
+  p_available NUMBER,
+  p_id_users NUMBER,
+  p_monto DECIMAL,
+  p_fecha_vencimiento DATE,
+  p_estado_multa VARCHAR2
+) AS
+  v_book_id NUMBER;
+  v_multa_id NUMBER;
+BEGIN
+  -- Insertar en la tabla books
+  INSERT INTO books (
+    title, publication_date, author, category, "edit", lang,
+    pages, description, ejemplares, stock, available
+  ) VALUES (
+    p_title, p_publication_date, p_author, p_category, p_edit, p_lang,
+    p_pages, p_description, p_ejemplares, p_stock, p_available
+  ) RETURNING id INTO v_book_id;
+
+  -- Insertar en la tabla multas
+  INSERT INTO multas (id_users, monto, fecha_vencimiento, estado_multa)
+  VALUES (p_id_users, p_monto, p_fecha_vencimiento, p_estado_multa)
+  RETURNING id_multa INTO v_multa_id;
+
+  -- Realizar otras operaciones o manipulaciones según sea necesario
+
+  COMMIT;
+EXCEPTION
+  WHEN OTHERS THEN
+    -- Manejar errores según sea necesario
+    ROLLBACK;
+    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END insert_book_and_multa;
+/
+-------------------------------------------------------------------------------
+--14
+CREATE OR REPLACE PROCEDURE apply_multas_to_overdue_books AS
+  v_book_id books.id%TYPE;
+  v_user_id multas.id_users%TYPE;
+  v_fecha_actual DATE := SYSDATE;
+
+  CURSOR overdue_books_cur IS
+    SELECT b.id, b.available, m.id_users, m.fecha_vencimiento
+    FROM books b
+    JOIN multas m ON b.id = m.id_users
+    WHERE b.available > 0 AND m.fecha_vencimiento < v_fecha_actual;
+
+BEGIN
+  -- Recorrer los libros vencidos y aplicar multas
+  FOR overdue_book_rec IN overdue_books_cur LOOP
+    v_book_id := overdue_book_rec.id;
+    v_user_id := overdue_book_rec.id_users;
+
+    -- Reducir la disponibilidad del libro
+    UPDATE books SET available = available - 1 WHERE id = v_book_id;
+
+    -- Aplicar multa al usuario
+    INSERT INTO multas (id_users, monto, fecha_vencimiento, estado_multa)
+    VALUES (v_user_id, 10.00, v_fecha_actual, 'PENDIENTE');
+
+    -- Realizar otras operaciones o manipulaciones según sea necesario
+  END LOOP;
+
+  COMMIT;
+EXCEPTION
+  WHEN OTHERS THEN
+    -- Manejar errores según sea necesario
+    ROLLBACK;
+    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END apply_multas_to_overdue_books;
+/
+-------------------------------------------------------------------------------
+--15
+
+-- Procedimiento para insertar un nuevo autor
+CREATE OR REPLACE PROCEDURE insertar_autor(
+    p_nombre_autor VARCHAR2,
+    p_nacionalidad VARCHAR2,
+    p_info_adicional CLOB
+) AS
+BEGIN
+    INSERT INTO autores (Nombre_Autor, Nacionalidad, Informacion_Adicional)
+    VALUES (p_nombre_autor, p_nacionalidad, p_info_adicional);
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END insertar_autor;
+/
+--------------------------------------------------------------------------------
+--16
+CREATE OR REPLACE PROCEDURE insertar_libro(
+    p_title VARCHAR2,
+    p_publication_date VARCHAR2,
+    p_author_id NUMBER,
+    p_category VARCHAR2,
+    p_edit VARCHAR2,
+    p_lang VARCHAR2,
+    p_pages VARCHAR2,
+    p_description VARCHAR2,
+    p_ejemplares VARCHAR2,
+    p_stock NUMBER,
+    p_available NUMBER
+) AS
+BEGIN
+    INSERT INTO books (
+        title, publication_date, author_id, category, "edit", lang,
+        pages, description, ejemplares, stock, available
+    ) VALUES (
+        p_title, p_publication_date, p_author_id, p_category, p_edit, p_lang,
+        p_pages, p_description, p_ejemplares, p_stock, p_available
+    );
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END insertar_libro;
+/
+-------------------------------------------------------------------------------------------
+--17
+-- Procedimiento para actualizar la información de un autor y el título de un libro
+CREATE OR REPLACE PROCEDURE actualizar_autor_y_libro(
+    p_id_autor NUMBER,
+    p_nombre_autor VARCHAR2,
+    p_nacionalidad VARCHAR2,
+    p_info_adicional CLOB,
+    p_id_libro NUMBER,
+    p_nuevo_titulo VARCHAR2
+) AS
+BEGIN
+    -- Actualizar información del autor
+    UPDATE autores
+    SET Nombre_Autor = p_nombre_autor,
+        Nacionalidad = p_nacionalidad,
+        Informacion_Adicional = p_info_adicional
+    WHERE ID_autor = p_id_autor;
+
+    -- Actualizar título del libro
+    UPDATE books
+    SET title = p_nuevo_titulo
+    WHERE id = p_id_libro;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END actualizar_autor_y_libro;
+/
+----------------------------------------------------------------------------------
+--18
+-- Procedimiento para insertar un nuevo autor
+CREATE OR REPLACE PROCEDURE insertar_autor(
+    p_nombre_autor VARCHAR2,
+    p_nacionalidad VARCHAR2,
+    p_info_adicional CLOB
+) AS
+BEGIN
+    INSERT INTO autores (Nombre_Autor, Nacionalidad, Informacion_Adicional)
+    VALUES (p_nombre_autor, p_nacionalidad, p_info_adicional);
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END insertar_autor;
+/
+------------------------------------------------------------------------------
+--19
+-- Procedimiento para insertar un nuevo género
+CREATE OR REPLACE PROCEDURE insertar_genero(
+    p_nombre_genero VARCHAR2,
+    p_desc_genero VARCHAR2
+) AS
+BEGIN
+    INSERT INTO Generos (Nombre_Genero, Descripcion_Genero)
+    VALUES (p_nombre_genero, p_desc_genero);
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END insertar_genero;
+/
+-----------------------------------------------------------------------------
+--20
+-- Procedimiento para asociar un libro con un autor
+CREATE OR REPLACE PROCEDURE asociar_libro_autor(
+    p_id_autor NUMBER,
+    p_id_libro NUMBER
+) AS
+BEGIN
+    INSERT INTO libros_autores (id_autor, id_libros)
+    VALUES (p_id_autor, p_id_libro);
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END asociar_libro_autor;
+/
+------------------------------------------------------------------------------
+--21
+-- Procedimiento para insertar una nueva multa
+CREATE OR REPLACE PROCEDURE insertar_multa(
+    p_id_usuario NUMBER,
+    p_monto DECIMAL,
+    p_fecha_vencimiento DATE,
+    p_estado_multa VARCHAR2
+) AS
+BEGIN
+    INSERT INTO multas (id_users, monto, fecha_vencimiento, estado_multa)
+    VALUES (p_id_usuario, p_monto, p_fecha_vencimiento, p_estado_multa);
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END insertar_multa;
+/
+------------------------------------------------------------------------------
+--21
+-- Procedimiento para actualizar una multa
+CREATE OR REPLACE PROCEDURE actualizar_multa(
+    p_id_multa NUMBER,
+    p_monto DECIMAL,
+    p_fecha_vencimiento DATE,
+    p_estado_multa VARCHAR2
+) AS
+BEGIN
+    UPDATE multas
+    SET monto = p_monto,
+        fecha_vencimiento = p_fecha_vencimiento,
+        estado_multa = p_estado_multa
+    WHERE id_multa = p_id_multa;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END actualizar_multa;
+/
+--------------------------------------------------------------------------
+--22
+-- Procedimiento para eliminar una multa
+CREATE OR REPLACE PROCEDURE eliminar_multa(
+    p_id_multa NUMBER
+) AS
+BEGIN
+    DELETE FROM multas WHERE id_multa = p_id_multa;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END eliminar_multa;
+/
+-----------------------------------------------------------------------
+--23
+-- Procedimiento para insertar una nueva editorial
+CREATE OR REPLACE PROCEDURE insertar_editorial(
+    p_nombre_editorial VARCHAR2,
+    p_direccion_editorial VARCHAR2,
+    p_info_contacto_editorial VARCHAR2
+) AS
+BEGIN
+    INSERT INTO editorial (Nombre_editorial, Direccion_editorial, Informacion_contacto_editorial)
+    VALUES (p_nombre_editorial, p_direccion_editorial, p_info_contacto_editorial);
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END insertar_editorial;
+/
+---------------------------------------------------------------------------
+--24
+
+CREATE OR REPLACE PROCEDURE actualizar_editorial(
+    p_id_editorial NUMBER,
+    p_nombre_editorial VARCHAR2,
+    p_direccion_editorial VARCHAR2,
+    p_info_contacto_editorial VARCHAR2
+) AS
+BEGIN
+    UPDATE editorial
+    SET Nombre_editorial = p_nombre_editorial,
+        Direccion_editorial = p_direccion_editorial,
+        Informacion_contacto_editorial = p_info_contacto_editorial
+    WHERE ID_editorial = p_id_editorial;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END actualizar_editorial;
+/
+-----------------------------------------------------------------------------
+--25
+CREATE OR REPLACE PROCEDURE eliminar_editorial(
+    p_id_editorial NUMBER
+) AS
+BEGIN
+    DELETE FROM editorial WHERE ID_editorial = p_id_editorial;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar errores según sea necesario
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
+END eliminar_editorial;
+/
+
 --Cursores----------------------------------------------------------------------
 --1--
 DECLARE
