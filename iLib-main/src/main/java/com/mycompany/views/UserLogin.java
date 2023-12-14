@@ -4,6 +4,7 @@
  */
 package com.mycompany.views;
 
+import com.mycompany.ilib.DashboardAdmin;
 import com.mycompany.ilib.*;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;

@@ -1,7 +1,7 @@
 package com.mycompany.views;
 
 import com.mycompany.ilib.DAOUsersImpl;
-import com.mycompany.views.DashboardAdmin;
+import com.mycompany.ilib.DashboardAdmin;
 import com.mycompany.interfaces.DAOUsers;
 import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
@@ -203,7 +203,7 @@ public class UsersAdmin extends javax.swing.JPanel {
     }//GEN-LAST:event_jTable1MousePressed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        DashboardAdmin.ShowJPanel(new UpUsers());
+        DashboardAdmin.ShowJPanel(new UpUsersAdmin());
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -228,7 +228,7 @@ public class UsersAdmin extends javax.swing.JPanel {
             try {
                 int userId = (int) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
                 DAOUsers dao = new DAOUsersImpl();
-                DashboardAdmin.ShowJPanel(new UpUsers(dao.getUserById(userId)));
+                DashboardAdmin.ShowJPanel(new UpUsersAdmin(dao.getUserById(userId)));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

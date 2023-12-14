@@ -1,7 +1,7 @@
 package com.mycompany.views;
 
 import com.mycompany.ilib.DAOBooksImpl;
-import com.mycompany.views.DashboardAdmin;
+import com.mycompany.ilib.DashboardAdmin;
 import com.mycompany.interfaces.DAOBooks;
 import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
@@ -197,7 +197,7 @@ public class BooksAdmin extends javax.swing.JPanel {
     }//GEN-LAST:event_jTable1MousePressed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        DashboardAdmin.ShowJPanel(new UpBooks());
+        DashboardAdmin.ShowJPanel(new UpBooksAdmin());
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -222,7 +222,7 @@ public class BooksAdmin extends javax.swing.JPanel {
             try {
                 int bookId = (int) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
                 DAOBooks dao = new DAOBooksImpl();
-                DashboardAdmin.ShowJPanel(new UpBooks(dao.getBookById(bookId)));
+                DashboardAdmin.ShowJPanel(new UpBooksAdmin(dao.getBookById(bookId)));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

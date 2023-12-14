@@ -2,7 +2,7 @@
 package com.mycompany.views;
 
 import com.mycompany.ilib.DAOMultasImpl;
-import com.mycompany.views.DashboardAdmin;
+import com.mycompany.ilib.DashboardAdmin;
 import com.mycompany.interfaces.DAOMultas;
 import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
@@ -193,7 +193,7 @@ public class MultasAdmin extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        DashboardAdmin.ShowJPanel(new UpMultas());
+        DashboardAdmin.ShowJPanel(new UpMultasAdmin());
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void jTable1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MousePressed

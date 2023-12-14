@@ -1,5 +1,6 @@
 package com.mycompany.views;
 
+import com.mycompany.ilib.DashboardAdmin;
 import com.mycompany.ilib.DAOEmpleadosImpl;
 import com.mycompany.ilib.Dashboard;
 import com.mycompany.interfaces.DAOEmplo;
