@@ -44,9 +44,19 @@ CREATE TABLE users (
   sanc_money NUMBER DEFAULT 0 NOT NULL
 );
 
--- Crear las restricciones de clave forÃ¯Â¿Â½nea
+
+CREATE SEQUENCE book_USERLOGIN_seq;
+
+CREATE TABLE book_USERLOGIN(
+  id NUMBER DEFAULT book_USERLOGIN_seq.NextVal Primary Key,
+  id_userlogin NUMBER NOT NULL,
+  id_book NUMBER NOT NULL
+);
+-- Crear las restricciones de clave forneaa
 ALTER TABLE lendings_table ADD CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id);
 ALTER TABLE lendings_table ADD CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books(id);
+ALTER TABLE book_USERLOGIN ADD CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books(id);
+ALTER TABLE book_USERLOGIN ADD CONSTRAINT fk_USERLOGIN FOREIGN KEY (id_userlogin) REFERENCES USERLOGIN(ID);
 
 --Crear Tabla UserLogin
 
@@ -121,20 +131,21 @@ CREATE TABLE usuario_multas (
     ID_multa NUMBER DEFAULT usuario_multa_seq.NextVal PRIMARY KEY
 );
 
+ALTER TABLE usuario_multas ADD CONSTRAINT fk_ID_USUARIO FOREIGN KEY (ID_usuario) REFERENCES users(id);
+ALTER TABLE usuario_multas ADD CONSTRAINT fk_ID_MULTA FOREIGN KEY (ID_multa) REFERENCES multas(id_multa);
+
 
 CREATE SEQUENCE autores_seq;
 
 CREATE TABLE autores (
-    ID_autor NUMBER DEFAULT multas_seq.NextVal PRIMARY Key,
-    Nombre_Autor VARCHAR(45),
-    Nacionalidad VARCHAR(25),
-    Informacion_Adicional TEXT
+    id_autor NUMBER DEFAULT multas_seq.NextVal PRIMARY Key,
+    author VARCHAR(255) NOT NULL
 );
 
-CREATE SEQUENCE generos_seq;
+CREATE SEQUENCE categorias_seq;
 
-CREATE TABLE Generos (
-    ID_genero NUMBER DEFAULT generos_seq.NextVal PRIMARY KEY,
+CREATE TABLE Categoria (
+    ID_categoria NUMBER DEFAULT categorias_seq.NextVal PRIMARY KEY,
     Nombre_Genero VARCHAR(50),
     Descripcion_Genero VARCHAR(50)
 );
@@ -142,14 +153,14 @@ CREATE TABLE Generos (
 CREATE SEQUENCE libros_autores_seq;
 
 CREATE TABLE libros_autores (
-    id_libros NUMBER DEFAULT libros_autores_seq.NextVal PRIMARY KEY,
+    id NUMBER DEFAULT libros_autores_seq.NextVal PRIMARY KEY,
     id_autor NUMBER
 );
 
 CREATE SEQUENCE libros_generos_seq;
 
 CREATE TABLE libros_generos (
-    id_libros NUMBER DEFAULT libros_generos_seq.NextVal PRIMARY KEY,
+    id NUMBER DEFAULT libros_generos_seq.NextVal PRIMARY KEY,
     Nombre_Genero VARCHAR(50)
 );
 
@@ -174,15 +185,14 @@ CREATE SEQUENCE autores_libro_seq;
 CREATE TABLE autores_libros (
     ID_autor_libro NUMBER DEFAULT autores_libro_seq.NextVal PRIMARY KEY,
     ID_autor NUMBER,
-    ID_libro NUMBER
+    id NUMBER
 );
 
 CREATE SEQUENCE idiomas_seq;
 
 CREATE TABLE idiomas (
     ID_idioma NUMBER DEFAULT idiomas_seq.NextVal PRIMARY KEY,
-    Nombre_idioma VARCHAR(50),
-    Descripcion_idioma VARCHAR(255)
+    lang VARCHAR(255)
 );
 
 --Triggers---------------------------------------------------------------
@@ -380,7 +390,7 @@ FROM multas;
 ----------------------------------------------------------------------
 
 CREATE VIEW user_penalty_info AS
-SELECT ID_usuario, ID_multa
+SELECT user_id, id_multa
 FROM usuario_multas;
 
 --Procedimientos Almacenados-------------------------------------------
@@ -468,20 +478,23 @@ CREATE OR REPLACE PROCEDURE libros_por_autor(
   p_num_libros OUT NUMBER
 ) AS
 BEGIN
-  -- Obtener el nÃºmero de libros escritos por el autor
-  SELECT COUNT(distinct la.ID_libro)
+  -- Obtener el n�mero de libros escritos por el autor
+  SELECT COUNT(DISTINCT b.id)
   INTO p_num_libros
-  FROM autores_libros la
-  JOIN autores a ON la.ID_autor = a.ID_autor
-  WHERE a.Nombre_Autor = p_nombre_autor;
+  FROM books b
+  WHERE b.author = p_nombre_autor;
+
+  -- Imprimir el resultado en el output del sistema
+  DBMS_OUTPUT.PUT_LINE('El autor ' || p_nombre_autor || ' ha escrito ' || p_num_libros || ' libro(s).');
 END;
---Ejcucion
+/
+-- Ejecuci�n del procedimiento almacenado
 DECLARE
   v_num_libros NUMBER;
 BEGIN
-  libros_por_autor('NombreAutor', v_num_libros);--Aqui se pone el nombre del autor que ya estarian en la base de datos registrados
-  DBMS_OUTPUT.PUT_LINE('El autor ha escrito ' || v_num_libros || ' libros.');
+  libros_por_autor('NombreAutor', v_num_libros); -- Reemplaza 'NombreAutor' con el nombre real del autor en la base de datos
 END;
+/
 
 --6 SP:  Procedimiento Almacenado que reciba el nombre de un gÃ©nero como parÃ¡metro y devuelva los tÃ­tulos de los libros pertenecientes a ese gÃ©nero.
 CREATE OR REPLACE PROCEDURE libros_por_genero(p_nombre_genero IN VARCHAR2) AS
@@ -1096,7 +1109,6 @@ DECLARE
         SELECT DISTINCT category FROM books;
 BEGIN
     FOR genre_rec IN c_book_genres LOOP
-        -- Lógica para cada género
         DBMS_OUTPUT.PUT_LINE('Book Genre: ' || genre_rec.category);
     END LOOP;
 END;
@@ -1107,7 +1119,6 @@ DECLARE
         SELECT * FROM autores;
 BEGIN
     FOR author_rec IN c_authors_with_info LOOP
-        -- Lógica para cada autor con información adicional
         DBMS_OUTPUT.PUT_LINE('Author ID: ' || author_rec.ID_autor || ', Name: ' || author_rec.Nombre_Autor || ', Nationality: ' || author_rec.Nacionalidad);
     END LOOP;
 END;
@@ -1119,9 +1130,8 @@ DECLARE
         FROM books
         WHERE id IN (SELECT book_id FROM lendings_table WHERE date_return IS NULL);
 BEGIN
-    -- Lógica de uso del cursor (puede ser un bucle FOR, etc.)
+    
     FOR libro IN libros_prestamo_cursor LOOP
-        -- Acciones a realizar con cada fila del cursor
         DBMS_OUTPUT.PUT_LINE('Libro en préstamo: ' || libro.title || ', Autor: ' || libro.author);
     END LOOP;
 END;
